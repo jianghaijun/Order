@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F1F0"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_heightPercent="8%">
+
+        <ImageButton
+            android:id="@+id/imgBtnBack"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/action_bar_bg"
+            android:src="@drawable/back_btn"
+            app:layout_widthPercent="100%h" />
+
+        <TextView
+            android:id="@+id/txtBackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/goods_order"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/nine_dp"
+            android:layout_weight="1"
+            android:background="@drawable/gray_stroke_white_solid_five_bg"
+            android:drawablePadding="@dimen/five_dp"
+            android:drawableRight="@drawable/search"
+            android:gravity="left|center"
+            android:hint="@string/please_enter_order_container"
+            android:paddingLeft="@dimen/five_dp"
+            android:paddingRight="@dimen/five_dp"
+            android:textSize="@dimen/twelve_sp" />
+
+        <TextView
+            android:id="@+id/txtScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="@dimen/five_dp"
+            android:drawableRight="@drawable/screen"
+            android:gravity="center"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/screen"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTopBtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:orientation="horizontal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/gray" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/ten_dp"
+        android:background="#F0F1F0"
+        app:srlEnableLoadMoreWhenContentNotFull="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvOrderList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F0F1F0"
+            android:paddingBottom="@dimen/five_dp"
+            android:scrollbars="none" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</com.zhy.android.percent.support.PercentLinearLayout>

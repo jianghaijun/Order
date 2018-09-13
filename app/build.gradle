@@ -1,0 +1,140 @@
+apply plugin: 'com.android.application'
+
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:23.1.0'
+}
+
+def keystoreFilePath = ''
+def keystorePSW = ''
+def keystoreAlias = ''
+def keystoreAliasPSW = ''
+def keyFile = file('s.keystore.temp')
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+keystoreFilePath = properties.getProperty("keystore.path")
+
+if (keystoreFilePath) {
+    keystorePSW = properties.getProperty("keystore.password")
+    keystoreAlias = properties.getProperty("keystore.alias")
+    keystoreAliasPSW = properties.getProperty("keystore.alias_password")
+    keyFile = file(keystoreFilePath)
+}
+
+android {
+    signingConfigs {
+        debug {
+            keyAlias keystoreAlias
+            keyPassword keystoreAliasPSW
+            storeFile keyFile
+            storePassword keystorePSW
+        }
+
+        release {
+            keyAlias keystoreAlias
+            keyPassword keystoreAliasPSW
+            storeFile keyFile
+            storePassword keystorePSW
+        }
+    }
+
+    compileSdkVersion 25
+    defaultConfig {
+        applicationId "com.zx.order"
+        minSdkVersion 17
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (keyFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+            debuggable false
+        }
+    }
+
+    // 配置打包文件名
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->  // each 改为 all
+            def fileName = "zx_${variant.versionName}_release.apk"
+            def outFile = output.outputFile
+            if (outFile != null && outFile.name.endsWith('.apk')) {
+                outputFileName = fileName  //  output.outputFile 改为 outputFileName
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // 百分比布局所需jar包
+    api 'com.zhy:percent-support-extends:1.1.1'
+    // 注解所需jar包
+    api 'org.xutils:xutils:3.5.0'
+    // 日志打印所需jar包
+    api 'com.orhanobut:logger:2.1.1'
+    // 图片加载所需jar包
+    api 'com.github.bumptech.glide:glide:4.2.0'
+    // 网络请求所需jar包
+    api 'com.squareup.okhttp3:okhttp:3.9.0'
+    // json解析所需jar包
+    api 'com.google.code.gson:gson:2.8.5'
+    // 网络请求加载dialog
+    api 'com.zyao89:zloading:1.0.8'
+    // 日期...工具类
+    api 'cn.hutool:hutool-all:4.0.9'
+    // 上拉加载、下拉刷新
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-7'
+    // 右滑关闭
+    api 'cn.bingoogolapple:bga-swipebacklayout:1.1.9'
+    // 沉浸式状态栏
+    api 'com.gyf.barlibrary:barlibrary:2.3.0'
+    // 底部导航
+    api 'com.ashokvarma.android:bottom-navigation-bar:2.0.1'
+    // 侧滑删除
+    api 'com.yanzhenjie:recyclerview-swipe:1.1.4'
+    // 本地数据库
+    api 'org.litepal.android:core:1.6.0'
+    // 腾讯Bugly
+    api 'com.tencent.bugly:crashreport:2.6.6'
+    api 'com.tencent.bugly:nativecrashreport:3.3.1'
+    // 时间轴---瀑布流
+    api 'com.github.vipulasri:timelineview:1.0.6'
+    // 时间选择器
+    api('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.5') {
+        exclude group: 'com.android.support'
+    }
+    // 选项卡
+    api 'com.android.support:design:25.4.0'
+}

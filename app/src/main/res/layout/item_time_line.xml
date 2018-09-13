@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llMain"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/gray_stroke_white_solid_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:background="@drawable/touch_bg"
+        android:drawablePadding="@dimen/ten_dp"
+        android:gravity="left|center"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginLeft="@dimen/five_dp"
+        android:layout_marginRight="@dimen/five_dp"
+        android:paddingLeft="@dimen/ten_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fourteen_sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginLeft="@dimen/one_dp"
+        android:layout_marginRight="@dimen/one_dp"
+        android:background="@color/main_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/one_dp"
+        android:layout_marginRight="@dimen/one_dp"
+        android:layout_marginBottom="@dimen/one_dp"
+        android:background="@drawable/touch_bg">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/one_dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/one_dp"
+            android:layout_marginLeft="@dimen/twenty_six_dp"
+            android:background="@color/dark_grey" />
+
+        <LinearLayout
+            android:id="@+id/llTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/seven_dp"
+            android:layout_marginTop="@dimen/five_dp"
+            android:background="@null"
+            android:orientation="vertical" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Order</string>
+
+    <string name="not_network">当前无任何可用网络，请链接网络后重试！</string>
+    <string name="server_exception">服务器异常！</string>
+    <string name="json_error">服务器返回数据格式有误！</string>
+
+    <string name="goods_order">货物订单</string>
+    <string name="screen">筛选</string>
+    <string name="reset">重置</string>
+    <string name="please_enter_order_container">请输入提单号/集装箱号</string>
+    <string name="seaborne_goods">海运货物</string>
+    <string name="air_cargo">空运货物</string>
+    <string name="box_info">还箱信息</string>
+    <string name="quarantine_delivery">检疫送货</string>
+    <string name="declaration_declaration">报检报关</string>
+    <string name="state_of_documents">单证状态</string>
+    <string name="freight_details">运费详情</string>
+    <string name="bill">单据</string>
+    <string name="bill_status">单据状态</string>
+    <string name="received_time">收到时间</string>
+    <string name="content_audit">内容审核</string>
+    <string name="file">文件</string>
+    <string name="quarantine_certificate">检疫证书</string>
+    <string name="declaration_form">报关单</string>
+    <string name="tax_bill">税单</string>
+    <string name="to_the_port">到港时间</string>
+    <string name="all">全部</string>
+    <string name="commodity_info">商品信息</string>
+    <string name="place_of_origin">产地</string>
+    <string name="ship_name">船名</string>
+    <string name="transfer_ship_name">中转船名</string>
+    <string name="port_of_destination">目的港</string>
+    <string name="seller">卖方</string>
+    <string name="forwarding_company">货代公司</string>
+    <string name="is_test">是否需要检验</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="documents_status">单证状态</string>
+    <string name="collected">已收齐</string>
+    <string name="uncollected">未收齐</string>
+    <string name="examine_status">审核状态</string>
+    <string name="already_passed">已通过</string>
+    <string name="not_through">未通过</string>
+    <string name="freight_condition">运费情况</string>
+    <string name="have">有（已支付）</string>
+    <string name="no_have">有（未支付）</string>
+    <string name="bill_of_lading_status">提单状态</string>
+    <string name="confirmed">已确认</string>
+    <string name="unconfirmed">未确认</string>
+    <string name="overdue_return_box">超期还箱</string>
+    <string name="returned_box">已还箱</string>
+    <string name="un_returned_box">未还箱</string>
+    <string name="query">确认</string>
+    <string name="warehousing_service">仓储服务</string>
+    <string name="document_type">单据类型</string>
+    <string name="service_order">服务订单</string>
+    <string name="query_submit">确认提交</string>
+
+
+</resources>

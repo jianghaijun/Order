@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="main_bg">#0099FF</color>
+    <color name="main_check_bg">#0191f1</color>
+    <color name="btn_check">#0188e2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_solid">#E3E3E3</color>
+    <!-- 深灰色 -->
+    <color name="dark_grey">#7F7F7F</color>
+    <color name="dark_b">#453f3f</color>
+    <color name="v_2_tab_color">#8a8a8a</color>
+    <color name="red">#fc0202</color>
+    <color name="gray">#D9D9D9</color>
+</resources>

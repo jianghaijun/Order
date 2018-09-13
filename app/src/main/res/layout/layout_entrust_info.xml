@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvServiceType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginRight="@dimen/ten_dp"
+        android:layout_marginTop="@dimen/twenty_dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnQuery"
+        android:layout_below="@+id/rvServiceType"
+        android:layout_margin="@dimen/ten_dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_stroke_white_solid_five_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/forty"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/warehousing_service"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/forty"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/forty"
+                    android:gravity="left|center"
+                    android:paddingLeft="@dimen/ten_dp"
+                    android:paddingRight="@dimen/ten_dp"
+                    android:text="@string/document_type"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fourteen_sp" />
+
+
+                <TextView
+                    android:id="@+id/txtDocumentType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableRight="@drawable/bottom_bg"
+                    android:paddingRight="@dimen/ten_dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/forty"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/forty"
+                    android:gravity="left|center"
+                    android:paddingLeft="@dimen/ten_dp"
+                    android:paddingRight="@dimen/ten_dp"
+                    android:text="@string/service_order"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fourteen_sp" />
+
+                <TextView
+                    android:id="@+id/txtServiceOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawableRight="@drawable/bottom_bg"
+                    android:paddingRight="@dimen/ten_dp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtCommodityName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="商品名称：水果生鲜"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtBillOfLadingNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="提单号：123122313"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtPortOfDestination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="目的港：但拉动"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtCargoOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="货主：小吴"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtClient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="委托方：案件来看是打飞机"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtCategoryOfGoods"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="商品类别：水产品"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtCommodityWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="商品重量：1000吨"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtCommodityNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="商品个数：1000箱"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/txtTel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center"
+                android:minHeight="@dimen/forty"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="联系电话：151406777539"
+                android:textColor="@color/black"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one_dp"
+                android:layout_marginLeft="@dimen/one_dp"
+                android:layout_marginRight="@dimen/one_dp"
+                android:background="@color/gray" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnQuery"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/ten_dp"
+        android:background="@drawable/btn_blue"
+        android:text="@string/query_submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fourteen_sp" />
+
+
+</com.zhy.android.percent.support.PercentRelativeLayout>
