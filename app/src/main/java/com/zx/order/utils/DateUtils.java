@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.zx.order.R;
 import com.zx.order.listener.IntListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.qqtheme.framework.picker.DatePicker;
 import cn.qqtheme.framework.picker.OptionPicker;
+import cn.qqtheme.framework.picker.TimePicker;
 import cn.qqtheme.framework.util.ConvertUtils;
 import cn.qqtheme.framework.widget.WheelView;
 
@@ -99,6 +103,7 @@ public class DateUtils {
 
     /**
      * 意见选择
+     *
      * @param mActivity
      * @param strList
      * @param listener
@@ -118,6 +123,83 @@ public class DateUtils {
             }
         });
         picker.show();
+    }
+
+    /**
+     * 时间选择
+     *
+     * @param mContext
+     * @param txt
+     */
+    public static void onTimePicker(Activity mContext, final TextView txt) {
+        TimePicker picker = new TimePicker(mContext, TimePicker.HOUR_24);
+        picker.setUseWeight(false);
+        picker.setCycleDisable(false);
+        picker.setRangeStart(0, 0);//00:00
+        picker.setRangeEnd(23, 59);//23:59
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
+        picker.setSelectedItem(currentHour, currentMinute);
+        picker.setTopLineVisible(false);
+        picker.setTextPadding(ConvertUtils.toPx(mContext, 15));
+        picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
+            @Override
+            public void onTimePicked(String hour, String minute) {
+                txt.setText(hour + ":" + minute);
+            }
+        });
+        picker.show();
+    }
+
+    /**
+     * 日期比较大小
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int compareDate(String date1, String date2) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            Date dt1 = df.parse(date1);
+            Date dt2 = df.parse(date2);
+            if (dt1.getTime() > dt2.getTime()) {
+                return 1;
+            } else if (dt1.getTime() < dt2.getTime()) {
+                return 2;
+            } else {
+                return 3;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 获取系统当前日期
+     * yyyy-MM-dd
+     *
+     * @param lData
+     * @return
+     */
+    public static String setDataToStr(long lData) {
+        Date date = DateUtil.date(lData == 0 ? System.currentTimeMillis() : lData);
+        String strDate = DateUtil.format(date, "yyyy-MM-dd");
+        return strDate;
+    }
+
+    /**
+     * 获取系统当前日期
+     * yyyy-MM-dd
+     *
+     * @param lData
+     * @return
+     */
+    public static String setDataToStr2(long lData) {
+        Date date = DateUtil.date(lData == 0 ? System.currentTimeMillis() : lData);
+        String strDate = DateUtil.format(date, "yyyy-MM-dd hh:mm");
+        return strDate;
     }
 
 }

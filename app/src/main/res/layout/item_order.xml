@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/forty"
+        android:layout_height="@dimen/thirty"
         android:layout_marginLeft="@dimen/five_dp"
         android:layout_marginRight="@dimen/five_dp"
         android:layout_marginTop="@dimen/five_dp"
@@ -25,7 +25,6 @@
             android:layout_weight="1"
             android:gravity="left|center"
             android:paddingLeft="@dimen/ten_dp"
-            android:text="集装箱号：ASDF5454ASDF"
             android:textColor="@color/black"
             android:textSize="@dimen/fourteen_sp" />
 
@@ -36,11 +35,9 @@
             android:gravity="center"
             android:paddingLeft="@dimen/ten_dp"
             android:paddingRight="@dimen/ten_dp"
-            android:text="未到港"
             android:textColor="@color/main_bg"
             android:textSize="@dimen/fourteen_sp" />
     </LinearLayout>
-
 
     <View
         android:layout_width="match_parent"
@@ -60,7 +57,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/thirty"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_marginLeft="@dimen/five_dp"
             android:layout_marginRight="@dimen/five_dp"
             android:layout_marginTop="@dimen/five_dp"
@@ -72,40 +69,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="left|center"
+                android:maxLines="1"
                 android:paddingLeft="@dimen/ten_dp"
-                android:text="商品名称：县猕猴桃"
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/fourteen_sp" />
 
             <TextView
-                android:id="@+id/txtLadingNum"
+                android:id="@+id/txtLadingNo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="left|center"
-                android:text="提单号：123456789"
+                android:maxLines="1"
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/fourteen_sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/thirty"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_marginLeft="@dimen/five_dp"
             android:layout_marginRight="@dimen/five_dp"
-            android:layout_marginTop="@dimen/five_dp"
             android:background="@drawable/touch_bg"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txtOrderNum"
+                android:id="@+id/txtOrderNo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="left|center"
+                android:maxLines="1"
                 android:paddingLeft="@dimen/ten_dp"
-                android:text="订单编号：32121321"
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/fourteen_sp" />
 
@@ -114,33 +113,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:gravity="left|center"
-                android:text="订单日期：2018-12-12"
+                android:maxLines="1"
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/fourteen_sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtPortDate"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/thirty"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_marginLeft="@dimen/five_dp"
             android:layout_marginRight="@dimen/five_dp"
-            android:layout_marginTop="@dimen/five_dp"
             android:background="@drawable/touch_bg"
-            android:gravity="left|center"
-            android:paddingLeft="@dimen/ten_dp"
-            android:text="订单编号：15132121321"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/fourteen_sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtPortDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/ten_dp"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <TextView
+                android:id="@+id/txtTextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:maxLines="1"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llStatus"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/thirty"
+            android:layout_height="@dimen/twenty_five_dp"
             android:layout_marginLeft="@dimen/five_dp"
             android:layout_marginRight="@dimen/five_dp"
-            android:layout_marginTop="@dimen/five_dp"
             android:background="@drawable/touch_bg"
             android:orientation="horizontal">
 

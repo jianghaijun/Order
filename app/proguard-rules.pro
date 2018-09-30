@@ -103,6 +103,11 @@
     *;
 }
 
+# banner 的混淆代码
+-keep class com.youth.banner.** {
+    *;
+ }
+
 #腾讯bugly
 -dontwarn com.tencent.bugly.**
 -keep class com.tencent.bugly.**{*;}
@@ -110,3 +115,8 @@
 -keepclasseswithmembers class android.support.v7.widget.RecyclerView$ViewHolder {
    public final View *;
 }
+#时间选择器
+-keepattributes InnerClasses,Signature
+-keepattributes *Annotation*
+
+-keep class cn.qqtheme.framework.entity.** { *;}

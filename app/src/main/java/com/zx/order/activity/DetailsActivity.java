@@ -74,8 +74,6 @@ public class DetailsActivity extends BaseActivity {
     @ViewInject(R.id.llBottom)
     private LinearLayout llBottom;
 
-
-
     @ViewInject(R.id.llType4)
     private LinearLayout llType4;
     @ViewInject(R.id.txtBillType)
@@ -120,7 +118,7 @@ public class DetailsActivity extends BaseActivity {
                 break;
             case "4":
                 setBillData();
-                llBottom.setVisibility(View.VISIBLE);
+                //llBottom.setVisibility(View.VISIBLE);
                 llType3.setVisibility(View.VISIBLE);
                 break;
             case "5":
@@ -142,10 +140,11 @@ public class DetailsActivity extends BaseActivity {
 
             // 单据
             TextView txtDj = new TextView(this);
-            txtDj.setText("测试" + i);
+            txtDj.setText("TRIU8722569" + i);
             txtDj.setTextSize(14);
+            txtDj.setPadding(DensityUtil.dip2px(10), 0, 0, 0);
             txtDj.setTextColor(ContextCompat.getColor(mContext, R.color.dark_grey));
-            txtDj.setGravity(Gravity.LEFT|Gravity.CENTER);
+            txtDj.setGravity(Gravity.LEFT | Gravity.CENTER);
 
             LinearLayout.LayoutParams lpDj = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             lpDj.weight = 1;
@@ -180,7 +179,10 @@ public class DetailsActivity extends BaseActivity {
             View v = new View(this);
             v.setBackgroundColor(ContextCompat.getColor(mContext, R.color.gray));
             LinearLayout.LayoutParams lpv = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(1));
-            if (i == 2) {lpv.bottomMargin = DensityUtil.dip2px(10);}
+            if (i == 2) {
+                v.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+                lpv.bottomMargin = DensityUtil.dip2px(10);
+            }
             llType3.addView(v, lpv);
         }
     }
@@ -190,23 +192,12 @@ public class DetailsActivity extends BaseActivity {
      *
      * @param v
      */
-    @Event({R.id.imgBtnLeft, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5})
+    @Event({R.id.imgBtnLeft})
     private void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.imgBtnLeft:
                 this.finish();
-                break;
-            case R.id.btn1:
-                //intent = new Intent(mContext, )
-                break;
-            case R.id.btn2:
-                break;
-            case R.id.btn3:
-                break;
-            case R.id.btn4:
-                break;
-            case R.id.btn5:
                 break;
         }
     }

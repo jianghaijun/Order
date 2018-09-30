@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tlTop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fifty_dp"
+        app:tabIndicatorColor="@color/main_bg"
+        app:tabSelectedTextColor="@color/main_bg"
+        app:tabTextColor="@color/black">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/un_reservations" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/reservations" />
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</com.zhy.android.percent.support.PercentLinearLayout>

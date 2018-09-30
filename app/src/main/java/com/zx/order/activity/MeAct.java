@@ -27,13 +27,13 @@ import java.util.List;
 /**
  * 我的
  */
-public class LatestInfoActivity {
+public class MeAct {
     private LatestInfoHolder holder;
     private Activity mContext;
     private List<LatestInfoBean> latestInfoBeanList = new ArrayList<>();
     private int loadType, dataSize, pagePosition = 1;
 
-    public LatestInfoActivity(Activity mContext, View layout) {
+    public MeAct(Activity mContext, View layout) {
         this.mContext = mContext;
         holder = new LatestInfoHolder();
         x.view().inject(holder, layout);

@@ -10,10 +10,17 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray_solid">#E3E3E3</color>
+    <!-- 提示框背景 -->
+    <color name="prompt_dialog_bg">#838383</color>
+    <!-- 设置背景 -->
+    <color name="prompt_dialog_reminder_bg">#F2F2F2</color>
     <!-- 深灰色 -->
     <color name="dark_grey">#7F7F7F</color>
     <color name="dark_b">#453f3f</color>
     <color name="v_2_tab_color">#8a8a8a</color>
     <color name="red">#fc0202</color>
     <color name="gray">#D9D9D9</color>
+    <color name="dark_white">#EEEEEE</color>
+    <color name="bottom_tab_select">#0099FF</color>
+    <color name="bottom_tab_un_select">#8A8A8A</color>
 </resources>

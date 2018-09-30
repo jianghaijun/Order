@@ -198,6 +198,7 @@ public class ProcessPopupWindow extends PopupWindow implements View.OnClickListe
                     }
                 });
                 break;
+            // 确认
             case R.id.btnQuery:
                 this.dismiss();
                 break;

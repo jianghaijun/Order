@@ -2,6 +2,7 @@ package com.zx.order.activity;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +15,13 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
+import com.zhy.android.percent.support.PercentLinearLayout;
 import com.zx.order.R;
 import com.zx.order.adapter.LatestInfoAdapter;
 import com.zx.order.adapter.OrderListAdapter;
 import com.zx.order.bean.LatestInfoBean;
 import com.zx.order.bean.OrderBean;
+import com.zx.order.popwindow.ProcessPopupWindow;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.ToastUtil;
 
@@ -30,17 +33,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
+
 
 /**
  * 我的
  */
-public class OrderInfoActivity {
+public class OrderInfoAct {
     private LatestInfoHolder holder;
     private Activity mContext;
     private List<OrderBean> latestInfoBeanList = new ArrayList<>();
     private int loadType, dataSize, pagePosition = 1;
 
-    public OrderInfoActivity(Activity mContext, View layout) {
+    public OrderInfoAct(Activity mContext, View layout) {
         this.mContext = mContext;
         holder = new LatestInfoHolder();
         x.view().inject(holder, layout);
@@ -49,22 +54,76 @@ public class OrderInfoActivity {
     /**
      * 赋值
      */
-    public void setDate() {
+    public void setDate(int type) {
+        if (type == 2) {
+            holder.actionBar.setVisibility(View.GONE);
+            holder.tlTop.setVisibility(View.GONE);
+        }
+
         holder.imgBtnBack.setVisibility(View.GONE);
         holder.txtBackTitle.setPadding(DensityUtil.dip2px(10), 0, 0, 0);
-
-        // 添加头部按钮
-        List<String> strList = new ArrayList<>();
-        strList.add("全部");
-        strList.add("未到港");
-        strList.add("已到港");
-        setTopBtn(strList);
+        holder.txtScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProcessPopupWindow pop = new ProcessPopupWindow(mContext);
+                pop.showAtDropDownRight(v);
+            }
+        });
 
         // 服务类型
-        for (int i = 0; i < 10; i++) {
-            OrderBean bean = new OrderBean();
-            latestInfoBeanList.add(bean);
-        }
+        OrderBean bean = new OrderBean();
+        bean.setTitle("集装箱：TRIU8722569");
+        bean.setCommodityName("FRESH BANANA NETSCO BRAND GROW");
+        bean.setBillOfLadingNo("ASC0185223");
+        bean.setOrderNo("ZCSU5846054");
+        bean.setOrderDate(DateUtil.parseDate("2018-05-20").getTime());
+        bean.setToThePortDate(DateUtil.parseDate("2018-06-36").getTime());
+        latestInfoBeanList.add(bean);
+
+        OrderBean bean1 = new OrderBean();
+        bean1.setTitle("集装箱：JXLU5842906");
+        bean1.setCommodityName("KOTA NANHAI / 0028E");
+        bean1.setBillOfLadingNo("GES800184200");
+        bean1.setOrderNo("OOLU2026826980");
+        bean1.setOrderDate(DateUtil.parseDate("2018-04-12").getTime());
+        bean1.setToThePortDate(DateUtil.parseDate("2018-05-25").getTime());
+        latestInfoBeanList.add(bean1);
+
+        OrderBean bean2 = new OrderBean();
+        bean2.setTitle("集装箱：OOLU6176360");
+        bean2.setCommodityName("FRESH WHITE PITAYA");
+        bean2.setBillOfLadingNo("GES800184200");
+        bean2.setOrderNo("ASC0185223");
+        bean2.setOrderDate(DateUtil.parseDate("2018-04-18").getTime());
+        bean2.setToThePortDate(DateUtil.parseDate("2018-05-24").getTime());
+        latestInfoBeanList.add(bean2);
+
+        OrderBean bean3 = new OrderBean();
+        bean3.setTitle("集装箱：TRIU8722569");
+        bean3.setCommodityName("FRESH BANANA NETSCO BRAND GROW");
+        bean3.setBillOfLadingNo("ASC0185223");
+        bean3.setOrderNo("ZCSU5846054");
+        bean3.setOrderDate(DateUtil.parseDate("2018-05-20").getTime());
+        bean3.setToThePortDate(DateUtil.parseDate("2018-06-36").getTime());
+        latestInfoBeanList.add(bean3);
+
+        OrderBean bean4 = new OrderBean();
+        bean4.setTitle("集装箱：JXLU5842906");
+        bean4.setCommodityName("KOTA NANHAI / 0028E");
+        bean4.setBillOfLadingNo("GES800184200");
+        bean4.setOrderNo("OOLU2026826980");
+        bean4.setOrderDate(DateUtil.parseDate("2018-04-12").getTime());
+        bean4.setToThePortDate(DateUtil.parseDate("2018-05-25").getTime());
+        latestInfoBeanList.add(bean4);
+
+        OrderBean bean5 = new OrderBean();
+        bean5.setTitle("集装箱：OOLU6176360");
+        bean5.setCommodityName("FRESH WHITE PITAYA");
+        bean5.setBillOfLadingNo("GES800184200");
+        bean5.setOrderNo("ASC0185223");
+        bean5.setOrderDate(DateUtil.parseDate("2018-04-18").getTime());
+        bean5.setToThePortDate(DateUtil.parseDate("2018-05-24").getTime());
+        latestInfoBeanList.add(bean5);
 
         holder.refreshLayout.setPrimaryColorsId(R.color.main_bg, android.R.color.white);
         holder.refreshLayout.setFooterTriggerRate(1);
@@ -115,51 +174,6 @@ public class OrderInfoActivity {
     }
 
     /**
-     * 设置顶部按钮
-     *
-     * @param strList
-     */
-    private void setTopBtn(List<String> strList) {
-        if (strList == null || strList.size() == 0) {
-            return;
-        }
-
-        holder.llTopBtn.removeAllViews();
-        final List<Button> buttonList = new ArrayList<>();
-        for (int i = 0; i < strList.size(); i++) {
-            final Button btn = new Button(mContext);
-            btn.setText(strList.get(i));
-            if (i == 0) {
-                btn.setTextColor(ContextCompat.getColor(mContext, R.color.main_bg));
-            } else {
-                btn.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-            }
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            lp.weight = 1;
-            btn.setTextSize(14);
-            btn.setBackground(null);
-            buttonList.add(btn);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setTabStart(buttonList, btn);
-                }
-            });
-            holder.llTopBtn.addView(btn, lp);
-        }
-    }
-
-    /**
-     * tab点击事件
-     */
-    private void setTabStart(List<Button> buttonList, Button btn) {
-        for (Button button : buttonList) {
-            button.setTextColor(ContextCompat.getColor(mContext, R.color.black));
-        }
-        btn.setTextColor(ContextCompat.getColor(mContext, R.color.main_bg));
-    }
-
-    /**
      * 停止加载
      */
     private void stopLoad() {
@@ -178,11 +192,15 @@ public class OrderInfoActivity {
         private RecyclerView rvOrderList;
         @ViewInject(R.id.refreshLayout)
         private RefreshLayout refreshLayout;
-        @ViewInject(R.id.llTopBtn)
-        private LinearLayout llTopBtn;
         @ViewInject(R.id.imgBtnBack)
         private ImageButton imgBtnBack;
         @ViewInject(R.id.txtBackTitle)
         private TextView txtBackTitle;
+        @ViewInject(R.id.txtScreen)
+        private TextView txtScreen;
+        @ViewInject(R.id.actionBar)
+        private PercentLinearLayout actionBar;
+        @ViewInject(R.id.tlTop)
+        private TabLayout tlTop;
     }
 }

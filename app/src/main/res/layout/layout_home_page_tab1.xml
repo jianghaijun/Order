@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:indicator_margin="@dimen/two_dp"
+        app:indicator_width="@dimen/five_dp"
+        app:title_height="@dimen/twenty_five_dp"
+        app:title_textsize="@dimen/fourteen_sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty_five"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/fifteen_dp"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:background="@color/main_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/real_time_info"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_px"
+        android:background="@color/gray" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F0F1F0"
+        android:paddingLeft="@dimen/ten_dp"
+        android:paddingRight="@dimen/ten_dp"
+        app:srlEnableLoadMoreWhenContentNotFull="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvMyOrderList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F0F1F0"
+            android:paddingBottom="@dimen/five_dp"
+            android:scrollbars="none" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</com.zhy.android.percent.support.PercentLinearLayout>
