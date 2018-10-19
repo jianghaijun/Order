@@ -108,10 +108,6 @@
     *;
  }
 
-#腾讯bugly
--dontwarn com.tencent.bugly.**
--keep class com.tencent.bugly.**{*;}
-
 -keepclasseswithmembers class android.support.v7.widget.RecyclerView$ViewHolder {
    public final View *;
 }
@@ -120,3 +116,11 @@
 -keepattributes *Annotation*
 
 -keep class cn.qqtheme.framework.entity.** { *;}
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+# tinker混淆规则
+-dontwarn com.tencent.tinker.**
+-keep class com.tencent.tinker.** { *; }
+
+-keep class android.support.**{*;}

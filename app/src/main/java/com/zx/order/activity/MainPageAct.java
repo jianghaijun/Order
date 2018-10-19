@@ -61,14 +61,14 @@ public class MainPageAct extends BaseActivity {
      * 初始化Tab页面信息
      */
     private void initTabPageData() {
-        //将要分页显示的View装入数组中
+        // 将要分页显示的View装入数组中
         LayoutInflater viewLI = LayoutInflater.from(this);
         layHomePage = viewLI.inflate(R.layout.layout_home_page, null);
         layReservation = viewLI.inflate(R.layout.layout_reservation, null);
         layOrder = viewLI.inflate(R.layout.layout_order, null);
         layPersonalCenter = viewLI.inflate(R.layout.layout_personal_center, null);
 
-        //每个页面的view数据
+        // 每个页面的view数据
         views = new ArrayList<>();
         views.add(layHomePage);
         views.add(layReservation);
