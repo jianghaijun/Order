@@ -1,5 +1,10 @@
 package com.zx.order.bean;
-
+/**
+ * 时间轴
+ * 作者：JHJ
+ * 日期：2018/10/15 16:58
+ * Q Q: 1320666709
+ */
 public class TimeLineBean {
     private String status;
     private String title;

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_solid"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/actionBar"
+        layout="@layout/navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        app:layout_heightPercent="8%" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/llMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:orientation="vertical"
+            android:padding="@dimen/ten_dp" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:layout_margin="@dimen/ten_dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnLastStep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/five_dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_blue"
+            android:text="@string/last_step"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/five_dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_blue"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+    </LinearLayout>
+
+</com.zhy.android.percent.support.PercentLinearLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llMain"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/gray_stroke_white_solid_bg"
+    android:orientation="vertical"
+    android:padding="@dimen/two_dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/touch_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/forty"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/five_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <TextView
+                android:id="@+id/txtCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/five_dp"
+                android:layout_marginRight="@dimen/five_dp"
+                android:drawableLeft="@drawable/collection_un_select"
+                android:drawablePadding="@dimen/five_dp"
+                android:gravity="center"
+                android:text="@string/collection"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="center"
+            android:orientation="vertical" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/forty"
+            android:background="@null"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnMore"
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/evaluate_more"
+                android:textColor="@color/main_check_bg"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <Button
+                android:id="@+id/btnReservation"
+                android:layout_width="@dimen/fifty_dp"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/btnMore"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/reservation"
+                android:textColor="@color/main_check_bg"
+                android:textSize="@dimen/fourteen_sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

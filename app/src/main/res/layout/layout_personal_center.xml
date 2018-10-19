@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="center"
+            app:collapsedTitleTextAppearance="@style/TitleTextAppearance"
+            app:contentScrim="@color/main_bg"
+            app:expandedTitleMarginBottom="@dimen/twenty_dp"
+            app:expandedTitleTextAppearance="@style/TitleTextAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@null"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <ImageView
+                    android:id="@+id/ivBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <ImageView
+                    android:id="@+id/ivHead"
+                    android:layout_width="@dimen/eighty_dp"
+                    android:layout_height="@dimen/eighty_dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/fifty_dp"
+                    android:layout_marginLeft="@dimen/twenty_dp"
+                    android:background="@null"
+                    android:src="@drawable/user_avatar"
+                    app:layout_collapseMode="parallax" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetLeft="@dimen/zero_dp"
+                app:contentInsetStart="@dimen/zero_dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:titleEnabled="false" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <Button
+            android:id="@+id/btnMyStock"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/my_stock"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/my_stock"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnMyBill"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/my_bill"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/my_bill"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnUpDatePassword"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/up_date_password"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/up_date_password"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnUpDateHead"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/update_head"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/up_date_head"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnComplaintsAndFeedback"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/complaints_and_feedback"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/complaints_and_feedback"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

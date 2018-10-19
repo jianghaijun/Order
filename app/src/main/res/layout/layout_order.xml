@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F1F0"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include
@@ -11,23 +13,41 @@
         layout="@layout/navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
-        android:visibility="gone"
+        android:layout_alignParentTop="true"
         app:layout_heightPercent="8%" />
+
+    <EditText
+        android:id="@+id/edtSearchContext"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forty"
+        android:layout_margin="@dimen/ten_dp"
+        android:background="@drawable/gray_stroke_white_solid_bg"
+        android:hint="@string/please_input_search_context"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="@dimen/ten_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fourteen_sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_px"
+        android:background="@color/gray" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F0F1F0"
+        android:background="@color/refreshLayout_bg"
         android:paddingLeft="@dimen/ten_dp"
         android:paddingRight="@dimen/ten_dp"
         app:srlEnableLoadMoreWhenContentNotFull="true">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvOrderList"
+            android:id="@+id/rvMyOrderList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F0F1F0"
             android:paddingBottom="@dimen/five_dp"
             android:scrollbars="none" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

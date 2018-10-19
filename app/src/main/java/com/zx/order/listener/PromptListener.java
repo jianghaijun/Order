@@ -1,10 +1,11 @@
 package com.zx.order.listener;
 
 /**
- * @author Administrator
- * @time 2017/10/11 0011 21:08
+ * 公共
+ * 作者：JHJ
+ * 日期：2018/10/12 14:15
+ * Q Q: 1320666709
  */
-
 public interface PromptListener {
     void isChoice(boolean trueOrFalse);
 }

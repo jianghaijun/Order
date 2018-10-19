@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dlScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhy.android.percent.support.PercentLinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_solid"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/actionBar"
+            layout="@layout/navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dp"
+            app:layout_heightPercent="8%" />
+
+        <LinearLayout
+            android:id="@+id/llMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llNoData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:text="@string/no_data1"
+                    android:textColor="@color/dark_b"
+                    android:textSize="@dimen/fourteen_sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llHaveData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/refreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#F0F1F0"
+                    android:paddingLeft="@dimen/ten_dp"
+                    android:paddingRight="@dimen/ten_dp"
+                    app:srlEnableLoadMoreWhenContentNotFull="true">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvInspectionCommission"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#F0F1F0"
+                        android:paddingBottom="@dimen/five_dp"
+                        android:scrollbars="none" />
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/forty"
+            android:layout_margin="@dimen/ten_dp"
+            android:background="@drawable/btn_blue"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+    </com.zhy.android.percent.support.PercentLinearLayout>
+
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="@string/search_context"
+            android:textColor="@color/dark_b"
+            android:textSize="@dimen/sixteen_sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/prosecutor"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <TextView
+                android:id="@+id/txtProsecutor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/five_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/five_dp"
+                android:background="@drawable/gray_stroke_white_solid_bg"
+                android:drawableRight="@drawable/drop_down"
+                android:gravity="center_vertical"
+                android:hint="@string/please_select"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/import_and_export_logo"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <TextView
+                android:id="@+id/txtImportAndExportLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/five_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/five_dp"
+                android:background="@drawable/gray_stroke_white_solid_bg"
+                android:drawableRight="@drawable/drop_down"
+                android:gravity="center_vertical"
+                android:hint="@string/please_select"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/inspect_type"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <TextView
+                android:id="@+id/txtInspectType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/five_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/five_dp"
+                android:background="@drawable/gray_stroke_white_solid_bg"
+                android:drawableRight="@drawable/drop_down"
+                android:gravity="center_vertical"
+                android:hint="@string/please_select"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <RadioGroup
+            android:id="@+id/rgBox"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp">
+
+            <RadioButton
+                android:id="@+id/rBtnWholeBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/whole_box"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <RadioButton
+                android:id="@+id/rBtnSpellBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/spell_box"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/bill_of_lading_num"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <EditText
+                android:id="@+id/edtBillOfLadingNum"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/five_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/five_dp"
+                android:background="@drawable/gray_stroke_white_solid_bg"
+                android:gravity="center_vertical"
+                android:hint="@string/input_bill_of_lading_num"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="@dimen/one_hundred_dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/box_no_1"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <EditText
+                android:id="@+id/edtBoxNo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/five_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/five_dp"
+                android:background="@drawable/gray_stroke_white_solid_bg"
+                android:gravity="center_vertical"
+                android:hint="@string/input_box_no"
+                android:paddingLeft="@dimen/ten_dp"
+                android:paddingRight="@dimen/ten_dp"
+                android:textColor="@color/dark_b"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_px"
+            android:background="@color/gray" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/forty"
+            android:layout_margin="@dimen/ten_dp"
+            android:background="@drawable/btn_blue"
+            android:text="@string/query"
+            android:textColor="@color/white"
+            android:textSize="@dimen/fourteen_sp" />
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llMain"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtContext"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty"
+        android:background="@null"
+        android:gravity="center"
+        android:text="@string/all"
+        android:textColor="@color/black"
+        android:textSize="@dimen/fourteen_sp" />
+
+    <TextView
+        android:id="@+id/txtDownArrow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thirty"
+        android:gravity="center"
+        android:textSize="@dimen/twenty_sp"
+        android:textColor="@color/black"
+        android:text="@string/down_arrow" />
+</LinearLayout>

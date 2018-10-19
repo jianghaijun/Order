@@ -16,6 +16,7 @@ public class ConstantsUtil {
     public static String prefix = "";
     // ACCOUNT_ID
     public static String ACCOUNT_ID = "tongren_qyh_app_id";
+
     // 参数格式
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     // OkHttpClient
@@ -23,9 +24,9 @@ public class ConstantsUtil {
             .connectTimeout(30000L, TimeUnit.MILLISECONDS)
             .readTimeout(30000L, TimeUnit.MILLISECONDS)
             .build();
+    // 刷新等待时间
+    public static final int REFRESH_WAITING_TIME = 500;
 
-    // 用户id
-    public static String USER_ID = "USER_ID";
     // token
     public static String TOKEN = "TOKEN";
     // 是否登录成功

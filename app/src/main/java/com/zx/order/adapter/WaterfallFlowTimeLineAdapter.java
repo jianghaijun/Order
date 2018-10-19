@@ -15,6 +15,9 @@ import java.util.List;
 
 /**
  * 瀑布流格式时间轴
+ * 作者：JHJ
+ * 日期：2018/10/12 17:42
+ * Q Q: 1320666709
  */
 public class WaterfallFlowTimeLineAdapter extends RecyclerView.Adapter<WaterfallFlowTimeLineAdapter.ViewHolder> {
     private Context mContext;
