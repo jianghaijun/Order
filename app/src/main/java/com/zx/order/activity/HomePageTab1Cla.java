@@ -6,15 +6,16 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zx.order.R;
 import com.zx.order.adapter.ClearanceStatusAdapter;
 import com.zx.order.bean.ClearanceBean;
+import com.zx.order.model.VoyageListModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ToastUtil;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -54,8 +56,13 @@ public class HomePageTab1Cla {
 
     /**
      * 赋值
+     *
+     * @param searchContext 搜索内容
      */
-    public void setDate() {
+    public void setDate(final String searchContext) {
+        pagePosition = 1;
+        dataList.clear();
+
         // 设置主题颜色
         holder.refreshLayout.setPrimaryColorsId(R.color.main_bg, android.R.color.white);
         holder.refreshLayout.setFooterTriggerRate(1);
@@ -74,13 +81,13 @@ public class HomePageTab1Cla {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(searchContext, false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -90,29 +97,26 @@ public class HomePageTab1Cla {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(searchContext, false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
 
-        /*if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData("", true);
+        if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
+            getData(searchContext, true);
         } else {
             ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
-        }*/
-
-        dataList = FalseDataUtil.getHomePageTab1Data();
-        setClearanceData();
+        }
     }
 
     /**
-     * 获取工序列表
+     * 获取航次列表
      *
-     * @param searchContext
+     * @param searchContext 搜索内容
+     * @param isLoading     是否弹出加载框
      */
     private void getData(final String searchContext, final boolean isLoading) {
         if (isLoading) {
@@ -121,10 +125,10 @@ public class HomePageTab1Cla {
         JSONObject obj = new JSONObject();
         obj.put("page", pagePosition);
         obj.put("limit", 10);
-        if (!StrUtil.isEmpty(searchContext)) {
-            obj.put("keyword", searchContext);
+        if (StrUtil.isNotEmpty(searchContext)) {
+            obj.put("voyage", searchContext);
         }
-        Request request = ChildThreadUtil.getRequest(mContext, "", obj.toString());
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.YD_VOYAGE_LIST, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -135,13 +139,17 @@ public class HomePageTab1Cla {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonData = response.body().string().toString();
-                /*if (JSONUtil.isJson(jsonData)) {
+                if (JSONUtil.isJson(jsonData)) {
                     Gson gson = new Gson();
-                    final WorkingListModel model = gson.fromJson(jsonData, WorkingListModel.class);
+                    final VoyageListModel model = gson.fromJson(jsonData, VoyageListModel.class);
                     if (model.isSuccess()) {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
                                 stopLoad();
                                 setClearanceData();
                                 LoadingUtils.hideLoading();
@@ -154,7 +162,7 @@ public class HomePageTab1Cla {
                 } else {
                     stopLoad();
                     ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
-                }*/
+                }
             }
         });
     }

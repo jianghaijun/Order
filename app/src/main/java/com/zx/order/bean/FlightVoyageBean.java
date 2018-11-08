@@ -7,49 +7,67 @@ package com.zx.order.bean;
  * Q Q: 1320666709
  */
 public class FlightVoyageBean {
-    private String billOfLadingNumContext;
-    private String billStatus;
-    private String declareStatus;
-    private String inspectionStatus;
-    private String boxNum;
+    private String cargoBillId;         // 主键ID
+    private String cargoBillNo;         // 提单号
+    private String voyageId;            // 航次Id
+    private String billState;           // 单据状态 0：齐全 1：缺失
+    private String declarationState;    // 申报状态 0：放行 1：扣留
+    private String inspectionState;     // 查验状态 0：待查 1：已查
+    private String pieces;              // 箱量
 
-    public String getBillOfLadingNumContext() {
-        return billOfLadingNumContext;
+    public String getCargoBillId() {
+        return cargoBillId == null ? "" : cargoBillId;
     }
 
-    public void setBillOfLadingNumContext(String billOfLadingNumContext) {
-        this.billOfLadingNumContext = billOfLadingNumContext;
+    public void setCargoBillId(String cargoBillId) {
+        this.cargoBillId = cargoBillId;
     }
 
-    public String getBillStatus() {
-        return billStatus;
+    public String getCargoBillNo() {
+        return cargoBillNo == null ? "" : cargoBillNo;
     }
 
-    public void setBillStatus(String billStatus) {
-        this.billStatus = billStatus;
+    public void setCargoBillNo(String cargoBillNo) {
+        this.cargoBillNo = cargoBillNo;
     }
 
-    public String getDeclareStatus() {
-        return declareStatus;
+    public String getVoyageId() {
+        return voyageId == null ? "" : voyageId;
     }
 
-    public void setDeclareStatus(String declareStatus) {
-        this.declareStatus = declareStatus;
+    public void setVoyageId(String voyageId) {
+        this.voyageId = voyageId;
     }
 
-    public String getInspectionStatus() {
-        return inspectionStatus;
+    public String getBillState() {
+        return billState == null ? "" : billState;
     }
 
-    public void setInspectionStatus(String inspectionStatus) {
-        this.inspectionStatus = inspectionStatus;
+    public void setBillState(String billState) {
+        this.billState = billState;
     }
 
-    public String getBoxNum() {
-        return boxNum;
+    public String getDeclarationState() {
+        return declarationState == null ? "" : declarationState;
     }
 
-    public void setBoxNum(String boxNum) {
-        this.boxNum = boxNum;
+    public void setDeclarationState(String declarationState) {
+        this.declarationState = declarationState;
+    }
+
+    public String getInspectionState() {
+        return inspectionState == null ? "" : inspectionState;
+    }
+
+    public void setInspectionState(String inspectionState) {
+        this.inspectionState = inspectionState;
+    }
+
+    public String getPieces() {
+        return pieces == null ? "" : pieces;
+    }
+
+    public void setPieces(String pieces) {
+        this.pieces = pieces;
     }
 }

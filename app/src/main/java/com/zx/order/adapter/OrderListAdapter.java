@@ -13,18 +13,31 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.zx.order.R;
 import com.zx.order.activity.OrderDetailsAct;
+import com.zx.order.base.BaseModel;
 import com.zx.order.bean.OrderBean;
 import com.zx.order.listener.StrListener;
+import com.zx.order.utils.ChildThreadUtil;
+import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
+import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ToastUtil;
 
 import org.xutils.common.util.DensityUtil;
 
+import java.io.IOException;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 订单列表
@@ -56,16 +69,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     @Override
     public void onBindViewHolder(OrderHolder holder, int position) {
         OrderBean orderBean = mDataList.get(position);
-        holder.txtStatus.setText(orderBean.getCurrentState());
+        holder.txtStatus.setText(getStatusContent(orderBean));
 
         // 是否已收藏
-        if (orderBean.isCollection()) {
-            holder.txtCollection.setCompoundDrawables(leftSelect, null, null, null);
-        } else {
+        if (StrUtil.equals(orderBean.getCollectFlag(), "0")) {
             holder.txtCollection.setCompoundDrawables(leftUnSelect, null, null, null);
+        } else {
+            holder.txtCollection.setCompoundDrawables(leftSelect, null, null, null);
         }
 
-        if (!StrUtil.containsAny(orderBean.getCurrentState(), "报关委托")) {
+        if (!StrUtil.equals(orderBean.getOrderType(), "0")) {
             holder.btnReservation.setVisibility(View.INVISIBLE);
         } else {
             holder.btnReservation.setVisibility(View.VISIBLE);
@@ -89,13 +102,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     /**
-     *
      * @param orderBean
      * @param holder
      */
     private void initView(OrderBean orderBean, OrderHolder holder) {
         holder.llContent.removeAllViews();
-        List<String> strList = orderBean.getReservationStep();
+        List<String> strList = orderBean.getOrderList();
         if (strList != null && strList.size() > 0) {
             LinearLayout.LayoutParams llLp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(30));
             llLp.setMargins(DensityUtil.dip2px(5), 0, DensityUtil.dip2px(5), 0);
@@ -116,7 +128,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     txtLeft.setText(sLeft);
                     txtLeft.setTextColor(color);
                     txtLeft.setTextSize(14);
-                    txtLeft.setGravity(Gravity.LEFT|Gravity.CENTER);
+                    txtLeft.setGravity(Gravity.LEFT | Gravity.CENTER);
                     txtLeft.setMaxLines(1);
                     txtLeft.setEllipsize(TextUtils.TruncateAt.END);
                     content.addView(txtLeft, llcLp);
@@ -128,7 +140,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     txtRight.setText(sRight);
                     txtRight.setTextColor(color);
                     txtRight.setTextSize(14);
-                    txtRight.setGravity(Gravity.LEFT|Gravity.CENTER);
+                    txtRight.setGravity(Gravity.LEFT | Gravity.CENTER);
                     txtRight.setMaxLines(1);
                     txtRight.setEllipsize(TextUtils.TruncateAt.END);
                     content.addView(txtRight, llcLp);
@@ -137,6 +149,57 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 holder.llContent.addView(content, llLp);
             }
         }
+    }
+
+    /**
+     * 获取状态文本
+     *
+     * @param orderBean 状态类型
+     */
+    private String getStatusContent(OrderBean orderBean) {
+        String str = "";
+        switch (orderBean.getOrderType()) {
+            case "0":
+                str = "报关预约 " + orderBean.getHandleState();
+                break;
+            case "1":
+                str = "看货预约 " + orderBean.getHandleState();
+                break;
+            case "2":
+                str = "对扒预约 " + orderBean.getHandleState();
+                break;
+            case "3":
+                str = "入库预约 " + orderBean.getHandleState();
+                break;
+            case "4":
+                str = "取样预约 " + orderBean.getHandleState();
+                break;
+            case "5":
+                str = "出库预约 " + orderBean.getHandleState();
+                break;
+            case "6":
+                str = "配送预约 " + orderBean.getHandleState();
+                break;
+            case "7":
+                str = "诉提预约 " + orderBean.getHandleState();
+                break;
+            case "8":
+                str = "熏蒸预约 " + orderBean.getHandleState();
+                break;
+            case "9":
+                str = "疏港委托 " + orderBean.getHandleState();
+                break;
+            case "10":
+                str = "查验委托 " + orderBean.getHandleState();
+                break;
+            case "11":
+                str = "验箱预约 " + orderBean.getHandleState();
+                break;
+            case "12":
+                str = "返箱预约 " + orderBean.getHandleState();
+                break;
+        }
+        return str;
     }
 
     /**
@@ -154,15 +217,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             switch (v.getId()) {
                 // 收藏
                 case R.id.txtCollection:
-                    orderBean.setCollection(!orderBean.isCollection());
-                    notifyDataSetChanged();
+                    collection(orderBean);
                     break;
-                // 看货
+                // 报关预约
                 case R.id.btnReservation:
                     DateUtils.yearMonthDayPicker(mContext, new StrListener() {
                         @Override
                         public void selectStr(String str) {
-                            ToastUtil.showShort(mContext, "预约成功！" + str);
+                            submitReservation(str, orderBean.getCustomsId());
                         }
                     });
                     break;
@@ -170,10 +232,99 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 case R.id.llMain:
                 case R.id.btnMore:
                     Intent intent = new Intent(mContext, OrderDetailsAct.class);
+                    intent.putExtra("orderId", orderBean.getOrderId());
                     mContext.startActivity(intent);
                     break;
             }
         }
+    }
+
+    /**
+     * 报关预约
+     *
+     * @param declarationTime 预约时间
+     * @param customsId       报关预约主键ID
+     */
+    private void submitReservation(String declarationTime, String customsId) {
+        LoadingUtils.showLoading(mContext);
+        JSONObject obj = new JSONObject();
+        obj.put("declarationTime", DateUtil.parse(declarationTime, "yyyy-MM-dd").getTime());
+        obj.put("customsId", customsId);
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.CUSTOMS_DECLARATION, obj.toString());
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final BaseModel model = gson.fromJson(jsonData, BaseModel.class);
+                    if (model.isSuccess()) {
+                        mContext.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LoadingUtils.hideLoading();
+                                ToastUtil.showShort(mContext, model.getMessage());
+                            }
+                        });
+                    } else {
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
+                }
+            }
+        });
+    }
+
+    /**
+     * 收藏
+     *
+     * @param orderBean 数据
+     */
+    private void collection(final OrderBean orderBean) {
+        LoadingUtils.showLoading(mContext);
+        JSONObject obj = new JSONObject();
+        obj.put("orderId", orderBean.getOrderId());
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.COLLECT, obj.toString());
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final BaseModel model = gson.fromJson(jsonData, BaseModel.class);
+                    if (model.isSuccess()) {
+                        mContext.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LoadingUtils.hideLoading();
+                                if (StrUtil.equals(orderBean.getCollectFlag(), "0")) {
+                                    orderBean.setCollectFlag("1");
+                                } else {
+                                    orderBean.setCollectFlag("0");
+                                }
+                                notifyDataSetChanged();
+                                ToastUtil.showShort(mContext, model.getMessage());
+                            }
+                        });
+                    } else {
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
+                }
+            }
+        });
     }
 
     /**

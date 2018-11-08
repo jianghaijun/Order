@@ -14,7 +14,7 @@
         android:layout_height="@dimen/forty"
         android:layout_margin="@dimen/ten_dp"
         android:background="@drawable/gray_stroke_white_solid_bg"
-        android:hint="@string/please_input_search_context"
+        android:hint="@string/please_input_voyage"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:maxLines="1"

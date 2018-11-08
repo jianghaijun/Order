@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import com.zx.order.R;
 import com.zx.order.base.BaseActivity;
+import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.SpUtil;
 
 import org.xutils.x;
@@ -37,13 +38,12 @@ public class SplashScreenAct extends BaseActivity {
      * 启动下一界面
      */
     private void startNextActivity() {
-        SpUtil.put(this, "isFirstStar", true);
-        //boolean isLoginFlag = (boolean) SpUtil.get(this, ConstantsUtil.IS_LOGIN_SUCCESSFUL, false);
-        //if (isLoginFlag) {
-        startActivity(new Intent(this, MainPageAct.class));
-        /*} else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }*/
+        boolean isLoginFlag = (boolean) SpUtil.get(this, ConstantsUtil.IS_LOGIN_SUCCESSFUL, false);
+        if (isLoginFlag) {
+            startActivity(new Intent(this, MainPageAct.class));
+        } else {
+            startActivity(new Intent(this, LoginAct.class));
+        }
         this.finish();
     }
 }

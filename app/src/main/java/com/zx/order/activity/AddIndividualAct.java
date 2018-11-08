@@ -11,11 +11,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.zx.order.R;
 import com.zx.order.base.BaseActivity;
+import com.zx.order.base.BaseModel;
 import com.zx.order.listener.IntListener;
+import com.zx.order.model.FlightVoyageModel;
+import com.zx.order.utils.ChildThreadUtil;
+import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
+import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
 import com.zx.order.utils.ToastUtil;
 
@@ -23,10 +29,18 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 添加预约
@@ -188,6 +202,7 @@ public class AddIndividualAct extends BaseActivity {
      * @param isContinueAdd
      */
     private void checkIsAllInput(boolean isContinueAdd) {
+        JSONObject obj = new JSONObject();
         switch (point) {
             // 疏港委托
             case 0:
@@ -198,7 +213,7 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(txtExpectedDateOfSuitcase.getText().toString().trim())) { // 预计提箱日期
                     ToastUtil.showShort(mContext, "请选择预计提箱日期！");
                 } else {
-                    submitData(isContinueAdd);
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 查验委托
@@ -216,7 +231,7 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(txtInspectionTime.getText().toString().trim())) { // 检查时间
                     ToastUtil.showShort(mContext, "请选择检查时间！");
                 } else {
-                    submitData(isContinueAdd);
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 入库预约
@@ -234,7 +249,14 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtWeight.getText().toString().trim())) { // 件重
                     ToastUtil.showShort(mContext, "请输入件重！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("standard", edtSpecifications.getText().toString().trim());// 规格
+                    obj.put("pieces", edtNumber.getText().toString().trim());// 件数
+                    obj.put("weight", edtWeight.getText().toString().trim());// 件重
+                    obj.put("orderType", "3");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 出库预约---取样预约
@@ -255,7 +277,17 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtWeight.getText().toString().trim())) { // 件重
                     ToastUtil.showShort(mContext, "请输入件重！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("type", point-3);// 车号
+                    obj.put("carNo", edtCarNo.getText().toString().trim());// 车号
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("standard", edtSpecifications.getText().toString().trim());// 规格
+                    obj.put("pieces", edtNumber.getText().toString().trim());// 件数
+                    obj.put("weight", edtWeight.getText().toString().trim());// 件重
+                    obj.put("isNeedCarMatching", rBtnYes.isChecked() ? 0 : 1);// 件重
+                    obj.put("orderType", point == 3 ? "5" : "4");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 对扒预约
@@ -275,7 +307,16 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtWeight.getText().toString().trim())) { // 件重
                     ToastUtil.showShort(mContext, "请输入件重！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("originalBoxNo", edtPrimaryBoxNo.getText().toString().trim());// 原箱号
+                    obj.put("targetBoxNo", edtTargetBoxNo.getText().toString().trim());// 目标箱号
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("standard", edtSpecifications.getText().toString().trim());// 规格
+                    obj.put("pieces", edtNumber.getText().toString().trim());// 件数
+                    obj.put("weight", edtWeight.getText().toString().trim());// 件重
+                    obj.put("isNeedCarMatching", rBtnYes.isChecked() ? 0 : 1);// 件重
+                    obj.put("orderType", "2");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 拆提预约
@@ -297,7 +338,17 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtWeight.getText().toString().trim())) { // 件重
                     ToastUtil.showShort(mContext, "请输入件重！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("originalBoxNo", edtPrimaryBoxNo.getText().toString().trim());// 原箱号
+                    obj.put("originalCarNo", edtTargetCarNo.getText().toString().trim());// 目标车号
+                    obj.put("targetBoxNo", edtTargetBoxNo.getText().toString().trim());// 目标箱号
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("standard", edtSpecifications.getText().toString().trim());// 规格
+                    obj.put("pieces", edtNumber.getText().toString().trim());// 件数
+                    obj.put("weight", edtWeight.getText().toString().trim());// 件重
+                    obj.put("isNeedCarMatching", rBtnYes.isChecked() ? 0 : 1);// 件重
+                    obj.put("orderType", "7");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 熏蒸预约
@@ -319,19 +370,35 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(txtFumigatingTime.getText().toString().trim())) { // 熏蒸时间
                     ToastUtil.showShort(mContext, "请选择熏蒸时间！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("standard", edtSpecifications.getText().toString().trim());// 规格
+                    obj.put("pieces", edtNumber.getText().toString().trim());// 件数
+                    obj.put("weight", edtWeight.getText().toString().trim());// 件重
+                    obj.put("colorNo", edtColorNo.getText().toString().trim());// 色号
+                    obj.put("fumigateTime", DateUtil.parse(txtFumigatingTime.getText().toString().trim()).getTime());// 熏蒸时间
+                    obj.put("orderType", "8");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 验箱预约
             case 8:
                 if (StrUtil.isEmpty(edtBillOfLadingNum.getText().toString().trim())) { // 提单号
                     ToastUtil.showShort(mContext, "请输入提单号！");
+                } else if (StrUtil.isEmpty(edtBoxNo.getText().toString().trim())) { // 箱号
+                    ToastUtil.showShort(mContext, "请输入箱号！");
                 } else if (StrUtil.isEmpty(edtShipCompany.getText().toString().trim())) { // 船公司
                     ToastUtil.showShort(mContext, "请输入船公司！");
                 } else if (StrUtil.isEmpty(edtCaseRequirements.getText().toString().trim())) { // 验箱要求
                     ToastUtil.showShort(mContext, "请输入验箱要求！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("shipCompany", edtShipCompany.getText().toString().trim());// 船公司
+                    obj.put("caseRequirements", edtCaseRequirements.getText().toString().trim());// 验箱要求
+                    obj.put("orderType", "11");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 返箱预约
@@ -345,12 +412,19 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtFleet.getText().toString().trim())) { // 车队
                     ToastUtil.showShort(mContext, "请输入车队！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("carNo", edtCarNo.getText().toString().trim());// 车号
+                    obj.put("fleet", edtFleet.getText().toString().trim());// 车队
+                    obj.put("orderType", "12");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
             // 配送预约
             case 10:
-                if (StrUtil.isEmpty(edtBoxNo.getText().toString().trim())) { // 箱号
+                if (StrUtil.isEmpty(edtBillOfLadingNum.getText().toString().trim())) { // 提单号
+                    ToastUtil.showShort(mContext, "请输入提单号！");
+                } else if (StrUtil.isEmpty(edtBoxNo.getText().toString().trim())) { // 箱号
                     ToastUtil.showShort(mContext, "请输入箱号！");
                 } else if (StrUtil.isEmpty(edtProductName.getText().toString().trim())) { // 品名
                     ToastUtil.showShort(mContext, "请输入品名！");
@@ -363,7 +437,15 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtDistributionRequirement.getText().toString().trim())) { // 配送要求
                     ToastUtil.showShort(mContext, "请输入配送要求！");
                 } else {
-                    submitData(isContinueAdd);
+                    obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
+                    obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
+                    obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
+                    obj.put("totalWeight", edtTotalWeight.getText().toString().trim());// 总重
+                    obj.put("destination", edtDestination.getText().toString().trim());// 目的地
+                    obj.put("deliveryTime", DateUtil.parse(txtDistributionTime.getText().toString().trim()).getTime());// 配送时间
+                    obj.put("deliveryAsk", edtDistributionRequirement.getText().toString().trim());// 配送要求
+                    obj.put("orderType", "6");// 预约类型
+                    submitData(isContinueAdd, obj);
                 }
                 break;
         }
@@ -372,15 +454,45 @@ public class AddIndividualAct extends BaseActivity {
     /**
      * 提交数据
      *
-     * @param isContinueAdd
+     * @param isContinueAdd 是否继续添加
+     * @param param 提交参数
      */
-    private void submitData(boolean isContinueAdd) {
-        ToastUtil.showShort(this, "提交成功");
-        if (isContinueAdd) {
-            clearInputData();
-        } else {
-            finish();
-        }
+    private void submitData(final boolean isContinueAdd, JSONObject param) {
+        LoadingUtils.showLoading(mContext);
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.ADD_CNTR_FOR_SINGLE, param.toString());
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final BaseModel model = gson.fromJson(jsonData, BaseModel.class);
+                    if (model.isSuccess()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                LoadingUtils.hideLoading();
+                                ToastUtil.showShort(mContext, "预约成功！");
+                                if (isContinueAdd) {
+                                    clearInputData();
+                                } else {
+                                    finish();
+                                }
+                            }
+                        });
+                    } else {
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.json_error));
+                }
+            }
+        });
     }
 
     /**
@@ -465,6 +577,7 @@ public class AddIndividualAct extends BaseActivity {
             // 验箱预约
             case 8:
                 edtBillOfLadingNum.setText("");
+                edtBoxNo.setText("");
                 edtShipCompany.setText("");
                 edtCaseRequirements.setText("");
                 break;
@@ -477,6 +590,7 @@ public class AddIndividualAct extends BaseActivity {
                 break;
             // 配送预约
             case 10:
+                edtBillOfLadingNum.setText("");
                 edtBoxNo.setText("");
                 edtProductName.setText("");
                 edtTotalWeight.setText("");
@@ -502,7 +616,7 @@ public class AddIndividualAct extends BaseActivity {
                 break;
             // 疏港委托---》预计提箱日期
             case R.id.txtExpectedDateOfSuitcase:
-                DateUtils.onYearMonthDayPicker(mContext, txtExpectedDateOfSuitcase);
+                DateUtils.onYearMonthDayTimePicker(mContext, txtExpectedDateOfSuitcase);
                 break;
             // 查验委托---》查验
             case R.id.txtInspectionCommission:
@@ -510,15 +624,15 @@ public class AddIndividualAct extends BaseActivity {
                 break;
             // 查验委托---》查验时间
             case R.id.txtInspectionTime:
-                DateUtils.onYearMonthDayPicker(mContext, txtInspectionTime);
+                DateUtils.onYearMonthDayTimePicker(mContext, txtInspectionTime);
                 break;
             // 熏蒸预约---》熏蒸时间
             case R.id.txtFumigatingTime:
-                DateUtils.onYearMonthDayPicker(mContext, txtFumigatingTime);
+                DateUtils.onYearMonthDayTimePicker(mContext, txtFumigatingTime);
                 break;
             // 配送预约---》配送时间
             case R.id.txtDistributionTime:
-                DateUtils.onYearMonthDayPicker(mContext, txtDistributionTime);
+                DateUtils.onYearMonthDayTimePicker(mContext, txtDistributionTime);
                 break;
             // 提交
             case R.id.btnAddSubmit:

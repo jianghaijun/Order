@@ -44,11 +44,11 @@ public class ClearanceStatusAdapter extends RecyclerView.Adapter<ClearanceStatus
     public void onBindViewHolder(OrderHolder holder, int position) {
         ClearanceBean bean = mDataList.get(position);
 
-        holder.txtShipName.setText("航名航次：" + bean.getShipNameContext());
-        holder.txtPortOfDestination.setText("目的港：" + bean.getPortOfDestination());
-        holder.txtEstimatedBerthingDate.setText("预计靠泊日期：" + DateUtils.setDataToStr(bean.getEstimatedBerthingDate()));
-        holder.txtActualBerthingDate.setText("实际靠泊日期：" + DateUtils.setDataToStr(bean.getActualBerthingDate()));
-        holder.txtBoxNum.setText("箱量：" + bean.getBoxNum());
+        holder.txtShipName.setText("航名航次：" + bean.getVoyage());
+        holder.txtPortOfDestination.setText("目的港：" + bean.getPortdestination());
+        holder.txtEstimatedBerthingDate.setText("预计靠泊日期：" + DateUtils.setDataToStr(bean.getDecArriveTime()));
+        holder.txtActualBerthingDate.setText("实际靠泊日期：" + DateUtils.setDataToStr(bean.getActualArriveTime()));
+        holder.txtBoxNum.setText("箱量：" + bean.getPieces());
 
         LinearLayout.LayoutParams lvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lvp.setMargins(0, DensityUtil.dip2px(10), 0, 0);
@@ -85,11 +85,13 @@ public class ClearanceStatusAdapter extends RecyclerView.Adapter<ClearanceStatus
                 // 流程
                 case R.id.txtSearch:
                     intent = new Intent(mContext, ContainerDetailsAct.class);
+                    intent.putExtra("voyageId", clearanceBean.getVoyageId());
                     mContext.startActivity(intent);
                     break;
                 // 航班航次
                 case R.id.llMain:
                     intent = new Intent(mContext, FlightVoyageAct.class);
+                    intent.putExtra("voyageId", clearanceBean.getVoyageId());
                     mContext.startActivity(intent);
                     break;
             }

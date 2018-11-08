@@ -41,9 +41,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     @Override
     public void onBindViewHolder(ReservationHolder holder, final int position) {
-        ReservationBean bean = mDataList.get(position);
-        holder.txtBillLadingNo.setText("提单号：" + bean.getBillLadingNo());
-        holder.txtNumber.setText("集装箱数量：" + bean.getNumber());
+        final ReservationBean bean = mDataList.get(position);
+        holder.txtBillLadingNo.setText("提单号：" + bean.getCargoBillNo());
+        holder.txtNumber.setText("集装箱数量：" + bean.getPieces());
 
         LinearLayout.LayoutParams lvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lvp.setMargins(0, DensityUtil.dip2px(10), 0, 0);
@@ -54,6 +54,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ReservationTabAct.class);
                 intent.putExtra("frozenFruitsType", frozenFruitsType);
+                intent.putExtra("cargoBillId", bean.getCargoBillId());
                 mContext.startActivity(intent);
             }
         });

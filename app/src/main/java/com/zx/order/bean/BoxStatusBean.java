@@ -7,44 +7,44 @@ package com.zx.order.bean;
  * Q Q: 1320666709
  */
 public class BoxStatusBean {
-    private String containerNo;
-    private String suitcaseCarNo;
-    private long returnBoxDate;
-    private long boxEntryTime;
-    private long arrivalTime;
-    private long approachTimeOfSuitcaseVehicle;
-    private long boxDrivingTime;
+    private String cntrNo;      // 集装箱号
+    private String outTruckNo;  // 提箱车号
+    private long retDate;       // 返箱日期
+    private long inCntrTime;    // 箱进场日期
+    private long arrivalTime;   // 运抵发送时间
+    private long vehicleDateOfSuitcase; // 提箱车辆进场时间
+    private long outCntrTime;   // 箱出场时间
 
-    public String getContainerNo() {
-        return containerNo;
+    public String getCntrNo() {
+        return cntrNo == null ? "" : cntrNo;
     }
 
-    public void setContainerNo(String containerNo) {
-        this.containerNo = containerNo;
+    public void setCntrNo(String cntrNo) {
+        this.cntrNo = cntrNo;
     }
 
-    public String getSuitcaseCarNo() {
-        return suitcaseCarNo;
+    public String getOutTruckNo() {
+        return outTruckNo == null ? "" : outTruckNo;
     }
 
-    public void setSuitcaseCarNo(String suitcaseCarNo) {
-        this.suitcaseCarNo = suitcaseCarNo;
+    public void setOutTruckNo(String outTruckNo) {
+        this.outTruckNo = outTruckNo;
     }
 
-    public long getReturnBoxDate() {
-        return returnBoxDate;
+    public long getRetDate() {
+        return retDate;
     }
 
-    public void setReturnBoxDate(long returnBoxDate) {
-        this.returnBoxDate = returnBoxDate;
+    public void setRetDate(long retDate) {
+        this.retDate = retDate;
     }
 
-    public long getBoxEntryTime() {
-        return boxEntryTime;
+    public long getInCntrTime() {
+        return inCntrTime;
     }
 
-    public void setBoxEntryTime(long boxEntryTime) {
-        this.boxEntryTime = boxEntryTime;
+    public void setInCntrTime(long inCntrTime) {
+        this.inCntrTime = inCntrTime;
     }
 
     public long getArrivalTime() {
@@ -55,19 +55,19 @@ public class BoxStatusBean {
         this.arrivalTime = arrivalTime;
     }
 
-    public long getApproachTimeOfSuitcaseVehicle() {
-        return approachTimeOfSuitcaseVehicle;
+    public long getVehicleDateOfSuitcase() {
+        return vehicleDateOfSuitcase;
     }
 
-    public void setApproachTimeOfSuitcaseVehicle(long approachTimeOfSuitcaseVehicle) {
-        this.approachTimeOfSuitcaseVehicle = approachTimeOfSuitcaseVehicle;
+    public void setVehicleDateOfSuitcase(long vehicleDateOfSuitcase) {
+        this.vehicleDateOfSuitcase = vehicleDateOfSuitcase;
     }
 
-    public long getBoxDrivingTime() {
-        return boxDrivingTime;
+    public long getOutCntrTime() {
+        return outCntrTime;
     }
 
-    public void setBoxDrivingTime(long boxDrivingTime) {
-        this.boxDrivingTime = boxDrivingTime;
+    public void setOutCntrTime(long outCntrTime) {
+        this.outCntrTime = outCntrTime;
     }
 }

@@ -15,7 +15,7 @@
         android:layout_marginRight="@dimen/ten_dp"
         android:layout_marginTop="@dimen/five_dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_widthPercent="90%">
 
         <TextView
@@ -29,9 +29,8 @@
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left|center"
-            android:minHeight="@dimen/forty"
+            android:gravity="center"
+            android:minHeight="@dimen/thirty"
             android:textColor="@color/white"
             android:textSize="@dimen/twelve_sp" />
     </LinearLayout>

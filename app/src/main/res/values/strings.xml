@@ -4,9 +4,18 @@
     <string name="not_network">当前无任何可用网络，请链接网络后重试！</string>
     <string name="server_exception">服务器异常！</string>
     <string name="json_error">服务器返回数据格式有误！</string>
+    <string name="picture_source">图片来源</string>
+    <string name="photo_graph">拍照</string>
+    <string name="album">相册</string>
+
+    <!--登录-->
+    <string name="user_name">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
 
     <!--首页-->
     <string name="please_input_search_context">请输入检索条件！</string>
+    <string name="please_input_voyage">请输入航名航次或目的港！</string>
     <string name="bill_of_lading_num">提单号：</string>
     <string name="clearance_status">通关状态</string>
     <string name="inspection">查验</string>
@@ -29,6 +38,8 @@
     <string name="input_container_no">请输入集装箱号！</string>
     <string name="expected_date_of_suitcase">预计提箱日期</string>
     <string name="input_expected_date_of_suitcase">请选择预计提箱日期！</string>
+    <string name="suitcase_car_no">提箱车号：</string>
+    <string name="input_suitcase_car_no">请输入提箱车号！</string>
     <string name="product_name">品名</string>
     <string name="input_product_name">请输入品名！</string>
     <string name="box_no">箱号</string>
@@ -75,6 +86,7 @@
     <string name="input_distribution_time">请选择配送时间！</string>
     <string name="distribution_requirement">配送要求</string>
     <string name="input_distribution_requirement">请输入配送要求！</string>
+    <string name="reset">重置</string>
     <string name="query">查询</string>
     <string name="confirm">确认</string>
     <string name="no_data">暂无数据，请输入提单号查询。</string>
@@ -83,12 +95,14 @@
     <string name="please_select">请选择！</string>
     <string name="port_of_dredging">疏港目的：</string>
     <string name="cancel">取消</string>
-    <string name="prosecutor">检查方：</string>
+    <string name="prosecutor">查验方：</string>
     <string name="search_context">检索条件</string>
     <string name="import_and_export_logo">进出口标识：</string>
     <string name="inspect_type">检查类型：</string>
     <string name="whole_box">整箱</string>
     <string name="spell_box">拼箱</string>
+    <string name="return_box_date">返箱日期：</string>
+    <string name="input_return_box_date">请选择返箱日期</string>
     <!--订单-->
     <string name="collection">收藏</string>
     <string name="next">下一步</string>
@@ -101,5 +115,6 @@
     <string name="up_date_password">更改密码</string>
     <string name="up_date_head">修改头像</string>
     <string name="complaints_and_feedback">投诉与反馈</string>
+    <string name="logout">注销登录</string>
 
 </resources>

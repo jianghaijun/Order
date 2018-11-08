@@ -8,8 +8,7 @@
         android:id="@+id/vpMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rlBottom"
-        android:layout_below="@+id/actionBar" />
+        android:layout_above="@+id/rlBottom" />
 
     <RelativeLayout
         android:id="@+id/rlBottom"

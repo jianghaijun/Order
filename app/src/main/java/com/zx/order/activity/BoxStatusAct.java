@@ -10,9 +10,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
@@ -20,9 +22,10 @@ import com.zx.order.R;
 import com.zx.order.adapter.BoxStatusAdapter;
 import com.zx.order.base.BaseActivity;
 import com.zx.order.bean.BoxStatusBean;
+import com.zx.order.model.BoxStatusModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
+import com.zx.order.utils.DateUtils;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -36,7 +39,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -61,6 +67,12 @@ public class BoxStatusAct extends BaseActivity {
     private RecyclerView rvOrderList;
     @ViewInject(R.id.dlScreen)
     private DrawerLayout dlScreen;
+    @ViewInject(R.id.edtContainerNo)
+    private EditText edtContainerNo;
+    @ViewInject(R.id.edtSuitcaseCarNo)
+    private EditText edtSuitcaseCarNo;
+    @ViewInject(R.id.txtReturnBoxDate)
+    private TextView txtReturnBoxDate;
 
     private int dataTotalNum = 0, loadType = 1, pagePosition = 1;
     private List<BoxStatusBean> dataList = new ArrayList<>();
@@ -83,14 +95,11 @@ public class BoxStatusAct extends BaseActivity {
 
         initData();
 
-        /*if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData("", true);
+        if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
+            getData(true);
         } else {
             ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
-        }*/
-
-        dataList = FalseDataUtil.getBoxStatusData();
-        setFlightVoyageData();
+        }
     }
 
     /**
@@ -115,13 +124,13 @@ public class BoxStatusAct extends BaseActivity {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -131,11 +140,10 @@ public class BoxStatusAct extends BaseActivity {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
@@ -144,7 +152,7 @@ public class BoxStatusAct extends BaseActivity {
     /**
      * 获取数据
      *
-     * @param isLoading
+     * @param isLoading 是否显示加载框
      */
     private void getData(final boolean isLoading) {
         if (isLoading) {
@@ -153,7 +161,18 @@ public class BoxStatusAct extends BaseActivity {
         JSONObject obj = new JSONObject();
         obj.put("page", pagePosition);
         obj.put("limit", 10);
-        Request request = ChildThreadUtil.getRequest(mContext, "", obj.toString());
+        obj.put("cargoBillId", getIntent().getStringExtra("cargoBillId"));
+        if (StrUtil.isNotEmpty(edtContainerNo.getText().toString().trim())) {
+            obj.put("cntrNo", edtContainerNo.getText().toString().trim());
+        }
+        if (StrUtil.isNotEmpty(edtSuitcaseCarNo.getText().toString().trim())) {
+            obj.put("outTruckNo", edtSuitcaseCarNo.getText().toString().trim());
+        }
+        if (StrUtil.isNotEmpty(txtReturnBoxDate.getText().toString().trim())) {
+            obj.put("retDate", DateUtil.parse(txtReturnBoxDate.getText().toString().trim(), "yyyy-MM-dd").getTime());
+        }
+
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.BOX_STATUS, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -164,15 +183,19 @@ public class BoxStatusAct extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonData = response.body().string().toString();
-                /*if (JSONUtil.isJson(jsonData)) {
+                if (JSONUtil.isJson(jsonData)) {
                     Gson gson = new Gson();
-                    final WorkingListModel model = gson.fromJson(jsonData, WorkingListModel.class);
+                    final BoxStatusModel model = gson.fromJson(jsonData, BoxStatusModel.class);
                     if (model.isSuccess()) {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
                                 stopLoad();
-                                setClearanceData();
+                                setFlightVoyageData();
                                 LoadingUtils.hideLoading();
                             }
                         });
@@ -183,7 +206,7 @@ public class BoxStatusAct extends BaseActivity {
                 } else {
                     stopLoad();
                     ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
-                }*/
+                }
             }
         });
     }
@@ -217,7 +240,8 @@ public class BoxStatusAct extends BaseActivity {
      *
      * @param v
      */
-    @Event({R.id.imgBtnLeft, R.id.imgBtnRight})
+    @Event({R.id.imgBtnLeft, R.id.imgBtnRight, R.id.txtReturnBoxDate,
+            R.id.btnSearch, R.id.btnClear})
     private void onClick(View v) {
         switch (v.getId()) {
             // 返回
@@ -228,7 +252,29 @@ public class BoxStatusAct extends BaseActivity {
             case R.id.imgBtnRight:
                 dlScreen.openDrawer(Gravity.RIGHT);
                 break;
-
+            // 返箱日期
+            case R.id.txtReturnBoxDate:
+                DateUtils.onYearMonthDayPicker(mContext, txtReturnBoxDate);
+                break;
+            // 重置
+            case R.id.btnClear:
+                edtContainerNo.setText("");
+                edtSuitcaseCarNo.setText("");
+                txtReturnBoxDate.setText("");
+                break;
+            // 搜索
+            case R.id.btnSearch:
+                /*if (StrUtil.isEmpty(edtContainerNo.getText().toString().trim()) &&
+                        StrUtil.isEmpty(edtSuitcaseCarNo.getText().toString().trim()) &&
+                        StrUtil.isEmpty(txtReturnBoxDate.getText().toString().trim())) {
+                    ToastUtil.showShort(mContext, "只少选择一个检索条件！");
+                } else {*/
+                    pagePosition = 1;
+                    dataList.clear();
+                    dlScreen.closeDrawer(Gravity.RIGHT);
+                    getData(true);
+                /*}*/
+                break;
         }
     }
 

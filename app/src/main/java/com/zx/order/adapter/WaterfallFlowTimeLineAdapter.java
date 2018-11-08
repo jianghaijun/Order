@@ -66,5 +66,4 @@ public class WaterfallFlowTimeLineAdapter extends RecyclerView.Adapter<Waterfall
             txtName = (TextView) view.findViewById(R.id.txtName);
         }
     }
-
 }

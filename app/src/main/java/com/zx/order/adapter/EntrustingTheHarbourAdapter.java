@@ -43,13 +43,13 @@ public class EntrustingTheHarbourAdapter extends RecyclerView.Adapter<Entrusting
     public void onBindViewHolder(final ReservationHolder holder, final int position) {
         final EntrustingTheHarbourBean dataBean = mDataList.get(position);
 
-        holder.cbBillLadingNo.setText("提单号：" + dataBean.getBillOfLadingNo());
-        holder.txtEnglishShipName.setText("英文船名：" + dataBean.getEnglishShipName());
+        holder.cbBillLadingNo.setText("提单号：" + dataBean.getCargoBillNo());
+        holder.txtEnglishShipName.setText("英文船名：" + dataBean.getEnVslname());
         holder.txtImportVoyage.setText("进口航次：" + dataBean.getImportVoyage());
-        holder.txtBoxNum.setText("箱号：" + dataBean.getBoxNum());
-        holder.txtBoxType.setText("箱型：" + dataBean.getBoxType());
-        holder.txtBoxSize.setText("尺寸：" + dataBean.getBoxSize());
-        holder.txtHarbourDredge.setText("疏港码头：" + dataBean.getHarbourDredge());
+        holder.txtBoxNum.setText("箱号：" + dataBean.getCntrNo());
+        holder.txtBoxType.setText("箱型：" + dataBean.getCntrType());
+        holder.txtBoxSize.setText("尺寸：" + dataBean.getCntrSize());
+        holder.txtHarbourDredge.setText("疏港码头：" + dataBean.getPort());
 
         LinearLayout.LayoutParams lvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lvp.setMargins(0, DensityUtil.dip2px(10), 0, 0);
@@ -66,7 +66,7 @@ public class EntrustingTheHarbourAdapter extends RecyclerView.Adapter<Entrusting
         holder.cbBillLadingNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBean.setSelect(!holder.cbBillLadingNo.isChecked());
+                dataBean.setSelect(holder.cbBillLadingNo.isChecked());
             }
         });
     }

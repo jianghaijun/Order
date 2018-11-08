@@ -1,23 +1,56 @@
 package com.zx.order.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.zx.order.R;
 import com.zx.order.base.BaseActivity;
+import com.zx.order.base.BaseModel;
+import com.zx.order.model.ClearanceInspectionModel;
+import com.zx.order.utils.ChildThreadUtil;
+import com.zx.order.utils.ConstantsUtil;
+import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
+import com.zx.order.utils.SpUtil;
+import com.zx.order.utils.ToastUtil;
 
+import org.litepal.LitePal;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import cn.hutool.json.JSONUtil;
+import cn.hutool.system.UserInfo;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * 主界面
@@ -30,6 +63,8 @@ public class MainPageAct extends BaseActivity {
     private ViewPager vpMain;
     @ViewInject(R.id.bottomNavigationBar)
     private BottomNavigationBar bottomNavigationBar;
+    private ImageView imgViewUserAvatar;
+
     // tab页面
     private HomePageCla homePageCla; // 首页
     private ReservationCla reservationCla; // 预约
@@ -79,6 +114,8 @@ public class MainPageAct extends BaseActivity {
         reservationCla = new ReservationCla(mContext, layReservation);
         orderCla = new OrderCla(mContext, layOrder);
         personalCenterCla = new PersonalCenterCla(mContext, layPersonalCenter);
+
+        imgViewUserAvatar = (ImageView) layPersonalCenter.findViewById(R.id.ivHead);
     }
 
     /**
@@ -166,7 +203,7 @@ public class MainPageAct extends BaseActivity {
                 reservationCla.setDate();
             } else if (arg0 == 2 && firstLoadTab3) {
                 firstLoadTab3 = false;
-                orderCla.setDate();
+                orderCla.setDate(false);
             } else if (arg0 == 3 && firstLoadTab4) {
                 firstLoadTab4 = false;
                 personalCenterCla.setDate();
@@ -180,6 +217,93 @@ public class MainPageAct extends BaseActivity {
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
+            String path = data.getStringExtra("result"); // 图片地址
+            if (!TextUtils.isEmpty(path)) {
+                uploadIcon(path);
+            }
+        } else if (requestCode == 1002 && resultCode == RESULT_OK && data != null) {
+            List<String> pathList = data.getStringArrayListExtra("result");
+            if (pathList != null && pathList.size() > 0) {
+                uploadIcon(pathList.get(0));
+            }
+        }
+    }
+
+    /**
+     * 上传头像
+     *
+     * @param path 图片地址
+     */
+    private void uploadIcon(String path) {
+        LoadingUtils.showLoading(mContext);
+        String fileName = path.substring(path.lastIndexOf("/") + 1);
+        File file = new File(path);
+        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream; charset=utf-8"), file);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("fileName", fileName, fileBody)
+                .build();
+        Request request = new Request.Builder()
+                .url(ConstantsUtil.BASE_URL + ConstantsUtil.SUBMIT_HEAD)
+                .addHeader("token", (String) SpUtil.get(mContext, ConstantsUtil.TOKEN, ""))
+                .post(requestBody)
+                .build();
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ChildThreadUtil.toastMsgHidden(mContext, "文件上传失败！");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final ClearanceInspectionModel model = gson.fromJson(jsonData, ClearanceInspectionModel.class);
+                    if (model.isSuccess()) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String fileUrl = model.getData().getImageUrl();
+                                RequestOptions options = new RequestOptions().circleCrop();
+                                Glide.with(mContext).load(fileUrl).apply(options).into(imgViewUserAvatar);
+                                ChildThreadUtil.toastMsgHidden(mContext, "头像上传成功");
+                                SpUtil.put(mContext, ConstantsUtil.USER_HEAD_URL, fileUrl);
+                            }
+                        });
+                    } else {
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.json_error));
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+            /*隐藏软键盘*/
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(inputMethodManager.isActive()){
+                inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
+
+            if (bottomNavigationBar.getCurrentSelectedPosition() == 0) {
+                homePageCla.search();
+            } else if (bottomNavigationBar.getCurrentSelectedPosition() == 2) {
+                orderCla.setDate(true);
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

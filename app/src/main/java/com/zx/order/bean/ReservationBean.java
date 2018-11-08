@@ -7,22 +7,31 @@ package com.zx.order.bean;
  * Q Q: 1320666709
  */
 public class ReservationBean {
-    private String billLadingNo;
-    private String number;
+    private String cargoBillId; // 提单Id
+    private String cargoBillNo; // 提单号
+    private String pieces;      // 箱量
 
-    public String getBillLadingNo() {
-        return billLadingNo;
+    public String getCargoBillId() {
+        return cargoBillId == null ? "" : cargoBillId;
     }
 
-    public void setBillLadingNo(String billLadingNo) {
-        this.billLadingNo = billLadingNo;
+    public void setCargoBillId(String cargoBillId) {
+        this.cargoBillId = cargoBillId;
     }
 
-    public String getNumber() {
-        return number;
+    public String getCargoBillNo() {
+        return cargoBillNo == null ? "" : cargoBillNo;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setCargoBillNo(String cargoBillNo) {
+        this.cargoBillNo = cargoBillNo;
+    }
+
+    public String getPieces() {
+        return pieces == null ? "" : pieces;
+    }
+
+    public void setPieces(String pieces) {
+        this.pieces = pieces;
     }
 }

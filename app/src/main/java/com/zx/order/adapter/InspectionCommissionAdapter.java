@@ -43,14 +43,14 @@ public class InspectionCommissionAdapter extends RecyclerView.Adapter<Inspection
         View view = View.inflate(parent.getContext(), R.layout.item_inspection_commission, null);
         return new ReservationHolder(view);
     }
-
+    
     @Override
     public void onBindViewHolder(final ReservationHolder holder, final int position) {
         final InspectionCommissionBean dataBean = mDataList.get(position);
 
-        holder.txtNavigationalName.setText("航名：" + dataBean.getNavigationalName());
-        holder.txtVoyageNum.setText("航次：" + dataBean.getVoyageNum());
-        holder.txtWharf.setText("码头：" + dataBean.getWharf());
+        holder.txtNavigationalName.setText("船名：" + dataBean.getChVslname());
+        holder.txtVoyageNum.setText("航次：" + dataBean.getVoyage());
+        holder.txtWharf.setText("码头：" + dataBean.getPort());
 
         LinearLayout.LayoutParams lvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lvp.setMargins(0, DensityUtil.dip2px(10), 0, 0);

@@ -14,18 +14,22 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zx.order.R;
 import com.zx.order.adapter.EntrustingTheHarbourAdapter;
 import com.zx.order.base.BaseActivity;
+import com.zx.order.base.BaseModel;
 import com.zx.order.bean.EntrustingTheHarbourBean;
 import com.zx.order.dialog.SelectDataDialog;
 import com.zx.order.listener.StrListListener;
+import com.zx.order.model.EntrustingTheHarbourModel;
+import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
+import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
 import com.zx.order.utils.ToastUtil;
 
@@ -33,10 +37,19 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 疏港委托
@@ -111,13 +124,13 @@ public class EntrustingTheHarbourAct extends BaseActivity {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -127,11 +140,10 @@ public class EntrustingTheHarbourAct extends BaseActivity {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
@@ -153,8 +165,120 @@ public class EntrustingTheHarbourAct extends BaseActivity {
      */
     private void searchData() {
         dataList.clear();
-        dataList.addAll(FalseDataUtil.getEntrustingData());
-        setData();
+        getData(true);
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param isLoading 是否显示加载框
+     */
+    private void getData(final boolean isLoading) {
+        if (isLoading) {
+            LoadingUtils.showLoading(mContext);
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("page", pagePosition);
+        obj.put("limit", 10);
+        obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.ENTRUST_HARBOUR_LIST, obj.toString());
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                stopLoad();
+                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final EntrustingTheHarbourModel model = gson.fromJson(jsonData, EntrustingTheHarbourModel.class);
+                    if (model.isSuccess()) {
+                        mContext.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
+                                stopLoad();
+                                setData();
+                                LoadingUtils.hideLoading();
+                            }
+                        });
+                    } else {
+                        stopLoad();
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    stopLoad();
+                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
+                }
+            }
+        });
+    }
+
+    /**
+     * 提交预约
+     *
+     * @param strList
+     */
+    private void submitData(List<String> strList) {
+        LoadingUtils.showLoading(mContext);
+        List<Map<String, String>> entrustIdList = new ArrayList<>();
+        for (EntrustingTheHarbourBean harbourBean : dataList) {
+            Map<String, String> map = new HashMap<>();
+            map.put("entrustHarbourId", harbourBean.getEntrustHarbourId());
+            map.put("voyageId", harbourBean.getVoyageId());
+            map.put("cntrId", harbourBean.getCntrId());
+            map.put("cargoBillId", harbourBean.getCargoBillId());
+            map.put("entrustTerminal", strList.get(0));
+            map.put("portPurpose", strList.get(1));
+            map.put("orderType", "9");
+            entrustIdList.add(map);
+        }
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.ENTRUST_HARBOUR, new Gson().toJson(entrustIdList));
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final BaseModel model = gson.fromJson(jsonData, BaseModel.class);
+                    if (model.isSuccess()) {
+                        mContext.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtil.showShort(mContext, "提交成功");
+                                for (EntrustingTheHarbourBean bean : dataList) {
+                                    bean.setSelect(false);
+                                }
+                                dataList.clear();
+                                entrustingTheHarbourAdapter = null;
+                                edtBillOfLadingNum.setText("");
+                                edtBillOfLadingNum.setFocusable(false);
+                                edtBillOfLadingNum.setFocusableInTouchMode(true);
+                                llMain.setFocusable(true);
+                                llMain.setFocusableInTouchMode(true);
+                                setData();
+                                LoadingUtils.hideLoading();
+                            }
+                        });
+                    } else {
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
+                }
+            }
+        });
     }
 
     /**
@@ -216,18 +340,7 @@ public class EntrustingTheHarbourAct extends BaseActivity {
                     new SelectDataDialog(mContext, "选择", new StrListListener() {
                         @Override
                         public void selectStrList(List<String> strList) {
-                            ToastUtil.showShort(mContext, "提交成功");
-                            for (EntrustingTheHarbourBean bean : dataList) {
-                                bean.setSelect(false);
-                            }
-                            dataList.clear();
-                            entrustingTheHarbourAdapter = null;
-                            edtBillOfLadingNum.setText("");
-                            edtBillOfLadingNum.setFocusable(false);
-                            edtBillOfLadingNum.setFocusableInTouchMode(true);
-                            llMain.setFocusable(true);
-                            llMain.setFocusableInTouchMode(true);
-                            setData();
+                            submitData(strList);
                         }
                     }).show();
                 }

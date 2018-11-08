@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
@@ -18,6 +19,7 @@ import com.zx.order.R;
 import com.zx.order.adapter.FlightVoyageAdapter;
 import com.zx.order.base.BaseActivity;
 import com.zx.order.bean.FlightVoyageBean;
+import com.zx.order.model.FlightVoyageModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.FalseDataUtil;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -78,14 +81,11 @@ public class FlightVoyageAct extends BaseActivity {
 
         initData();
 
-        /*if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData("", true);
+        if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
+            getData( true);
         } else {
-            ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
-        }*/
-
-        dataList = FalseDataUtil.getFlightVoyageData();
-        setFlightVoyageData();
+            ToastUtil.showShort(mContext, getString(R.string.not_network));
+        }
     }
 
     /**
@@ -110,13 +110,13 @@ public class FlightVoyageAct extends BaseActivity {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -126,11 +126,10 @@ public class FlightVoyageAct extends BaseActivity {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
@@ -139,7 +138,7 @@ public class FlightVoyageAct extends BaseActivity {
     /**
      * 获取数据
      *
-     * @param isLoading
+     * @param isLoading 是否显示加载动画
      */
     private void getData(final boolean isLoading) {
         if (isLoading) {
@@ -148,26 +147,31 @@ public class FlightVoyageAct extends BaseActivity {
         JSONObject obj = new JSONObject();
         obj.put("page", pagePosition);
         obj.put("limit", 10);
-        Request request = ChildThreadUtil.getRequest(mContext, "", obj.toString());
+        obj.put("voyageId", getIntent().getStringExtra("voyageId"));
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.YD_CARGO_BILL_LIST, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 stopLoad();
-                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+                ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.server_exception));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonData = response.body().string().toString();
-                /*if (JSONUtil.isJson(jsonData)) {
+                if (JSONUtil.isJson(jsonData)) {
                     Gson gson = new Gson();
-                    final WorkingListModel model = gson.fromJson(jsonData, WorkingListModel.class);
+                    final FlightVoyageModel model = gson.fromJson(jsonData, FlightVoyageModel.class);
                     if (model.isSuccess()) {
-                        mContext.runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
                                 stopLoad();
-                                setClearanceData();
+                                setFlightVoyageData();
                                 LoadingUtils.hideLoading();
                             }
                         });
@@ -177,8 +181,8 @@ public class FlightVoyageAct extends BaseActivity {
                     }
                 } else {
                     stopLoad();
-                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
-                }*/
+                    ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.json_error));
+                }
             }
         });
     }

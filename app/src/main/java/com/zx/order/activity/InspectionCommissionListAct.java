@@ -9,9 +9,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
@@ -19,18 +23,34 @@ import com.zx.order.R;
 import com.zx.order.adapter.InspectionCommissionListAdapter;
 import com.zx.order.base.BaseActivity;
 import com.zx.order.bean.InspectionCommissionBean;
+import com.zx.order.model.InspectionCommissionModel;
+import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
+import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
+import com.zx.order.utils.SpUtil;
 import com.zx.order.utils.ToastUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * 查验委托---下一步
@@ -68,9 +88,7 @@ public class InspectionCommissionListAct extends BaseActivity {
         imgBtnLeft.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.back_btn));
 
         initData();
-
-        dataList = FalseDataUtil.getInspectionCommissionNextData();
-        setData();
+        getData(true);
     }
 
     /**
@@ -95,13 +113,13 @@ public class InspectionCommissionListAct extends BaseActivity {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -111,11 +129,62 @@ public class InspectionCommissionListAct extends BaseActivity {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param isLoading 是否显示加载框
+     */
+    private void getData(final boolean isLoading) {
+        if (isLoading) {
+            LoadingUtils.showLoading(mContext);
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("page", pagePosition);
+        obj.put("limit", 10);
+        obj.put("voyageId", getIntent().getStringExtra("voyageId"));
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.CNTR_DEATAIL_LIST, obj.toString());
+        ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                stopLoad();
+                ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.server_exception));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonData = response.body().string().toString();
+                if (JSONUtil.isJson(jsonData)) {
+                    Gson gson = new Gson();
+                    final InspectionCommissionModel model = gson.fromJson(jsonData, InspectionCommissionModel.class);
+                    if (model.isSuccess()) {
+                        mContext.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
+                                stopLoad();
+                                setData();
+                                LoadingUtils.hideLoading();
+                            }
+                        });
+                    } else {
+                        stopLoad();
+                        ChildThreadUtil.checkTokenHidden(mContext, model.getMessage(), model.getCode());
+                    }
+                } else {
+                    stopLoad();
+                    ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
                 }
             }
         });
@@ -170,7 +239,41 @@ public class InspectionCommissionListAct extends BaseActivity {
                 if (!isSelect) {
                     ToastUtil.showShort(mContext, "请先选择一条数据！");
                 } else {
+                    List<Map<String, Object>> dataMap = new ArrayList<>();
+                    for (InspectionCommissionBean bean : dataList) {
+                        if (bean.isSelect()) {
+                            List<Map<String, Object>> obMap = bean.getSubmitList();
+                            if (obMap != null) {
+                                Map<String, Object> strMap = new HashMap<>();
+                                strMap.put("cntrId", bean.getCntrId());
+                                String key;
+                                for (Map<String, Object> map : obMap) {
+                                    String controlType = (String) map.get("controlType");
+                                    switch (controlType) {
+                                        case "1":
+                                            key = (String) map.get("submitFieldName");
+                                            EditText edt = (EditText) map.get("control");
+                                            strMap.put(key, edt.getText().toString().trim());
+                                            break;
+                                        case "2":
+                                            key = (String) map.get("submitFieldName");
+                                            TextView txtSelect = (TextView) map.get("control");
+                                            strMap.put(key, txtSelect.getHint().toString().trim());
+                                            break;
+                                        case "3":
+                                            key = (String) map.get("submitFieldName");
+                                            TextView txtData = (TextView) map.get("control");
+                                            strMap.put(key, DateUtil.parse(txtData.getText().toString().trim()).getTime());
+                                            break;
+                                    }
+                                }
+                                dataMap.add(strMap);
+                            }
+                        }
+                    }
+
                     Intent intent = new Intent(mContext, InspectionCommissionDetailsAct.class);
+                    SpUtil.put(mContext, ConstantsUtil.INSPECTION_COMMISSION, new Gson().toJson(dataMap));
                     startActivity(intent);
                 }
                 break;

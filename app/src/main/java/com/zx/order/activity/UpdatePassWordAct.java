@@ -89,6 +89,7 @@ public class UpdatePassWordAct extends BaseActivity {
 
     /**
      * 修改密码
+     *
      * @param newPassWord
      * @param oldPassWord
      */
@@ -98,7 +99,7 @@ public class UpdatePassWordAct extends BaseActivity {
         obj.put("userPwdOld", oldPassWord);
         obj.put("userPwd", newPassWord);
         obj.put("userPwdNew", newPassWord);
-        /*Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.UPDATE_PASSWORD, obj.toString());
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.UPDATE_PASSWORD, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -120,7 +121,7 @@ public class UpdatePassWordAct extends BaseActivity {
                                 ToastUtil.showLong(mContext, "密码修改成功请重新登录！");
                                 SpUtil.put(mContext, ConstantsUtil.IS_LOGIN_SUCCESSFUL, false);
                                 ScreenManagerUtil.popAllActivityExceptOne();
-                                startActivity(new Intent(mContext, LoginActivity.class));
+                                startActivity(new Intent(mContext, LoginAct.class));
                             }
                         });
                     } else {
@@ -130,10 +131,7 @@ public class UpdatePassWordAct extends BaseActivity {
                     ChildThreadUtil.toastMsgHidden(mContext, getString(R.string.json_error));
                 }
             }
-        });*/
-        LoadingUtils.hideLoading();
-        ToastUtil.showLong(mContext, "密码修改成功！");
-        finish();
+        });
     }
 
     @Event({R.id.imgBtnLeft, R.id.btnQueryUpdate})

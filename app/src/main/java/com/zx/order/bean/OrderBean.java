@@ -1,5 +1,6 @@
 package com.zx.order.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,134 +10,83 @@ import java.util.List;
  * Q Q: 1320666709
  */
 public class OrderBean {
-    private String billOfLadingNo;
-    private String billStatus;
-    private String declareStatus;
-    private String inspectionStatus;
-    private String boxNum;
-    private String containerNo; // 集装箱号
-    private boolean isCollection = false; // 是否收藏
-    private String currentState; // 当前状态
-    private String nextStep; // 下一步处理
-    private String reservationType; // 预约类型
-    private List<String> reservationStep; // 预约步骤
-    private String stepStatus; // 处理状态
-    private int evaluateLevel = 0; // 评价等级
-    private String evaluateContent; // 评价内容
-    private boolean isOpen = false; // 是否展开
-    private boolean isAnimating = false; // 是否正在执行加载动画
-    private int height;
+    private String orderId;             // 主键ID
+    private String otherId;             // 其它表主键ID
+    private String otherIdName;         // 其它表主键名称
+    private String customsId;           // 报关预约主键
+    private String orderType;           // 类型
+    private String handleState;         // 处理状态
+    private List<String> orderList;     // 预约步骤
+    private String collectFlag = "0";   // 是否收藏 0：未1：收藏
+    private int evaluateLevel = 0;      // 评价等级
+    private String evaluateContent;     // 评价内容
+    private boolean isOpen = false;     // 是否展开
 
-    public int getHeight() {
-        return height;
+    public String getOrderId() {
+        return orderId == null ? "" : orderId;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public boolean isAnimating() {
-        return isAnimating;
+    public String getOtherId() {
+        return otherId == null ? "" : otherId;
     }
 
-    public void setAnimating(boolean animating) {
-        isAnimating = animating;
+    public void setOtherId(String otherId) {
+        this.otherId = otherId;
     }
 
-    public String getBillOfLadingNo() {
-        return billOfLadingNo;
+    public String getOtherIdName() {
+        return otherIdName == null ? "" : otherIdName;
     }
 
-    public void setBillOfLadingNo(String billOfLadingNo) {
-        this.billOfLadingNo = billOfLadingNo;
+    public void setOtherIdName(String otherIdName) {
+        this.otherIdName = otherIdName;
     }
 
-    public String getBillStatus() {
-        return billStatus;
+    public String getCustomsId() {
+        return customsId == null ? "" : customsId;
     }
 
-    public void setBillStatus(String billStatus) {
-        this.billStatus = billStatus;
+    public void setCustomsId(String customsId) {
+        this.customsId = customsId;
     }
 
-    public String getDeclareStatus() {
-        return declareStatus;
+    public String getOrderType() {
+        return orderType == null ? "" : orderType;
     }
 
-    public void setDeclareStatus(String declareStatus) {
-        this.declareStatus = declareStatus;
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 
-    public String getInspectionStatus() {
-        return inspectionStatus;
+    public String getHandleState() {
+        return handleState == null ? "" : handleState;
     }
 
-    public void setInspectionStatus(String inspectionStatus) {
-        this.inspectionStatus = inspectionStatus;
+    public void setHandleState(String handleState) {
+        this.handleState = handleState;
     }
 
-    public String getBoxNum() {
-        return boxNum;
+    public List<String> getOrderList() {
+        if (orderList == null) {
+            return new ArrayList<>();
+        }
+        return orderList;
     }
 
-    public void setBoxNum(String boxNum) {
-        this.boxNum = boxNum;
+    public void setOrderList(List<String> orderList) {
+        this.orderList = orderList;
     }
 
-    public String getContainerNo() {
-        return containerNo;
+    public String getCollectFlag() {
+        return collectFlag == null ? "" : collectFlag;
     }
 
-    public void setContainerNo(String containerNo) {
-        this.containerNo = containerNo;
-    }
-
-    public boolean isCollection() {
-        return isCollection;
-    }
-
-    public void setCollection(boolean collection) {
-        isCollection = collection;
-    }
-
-    public String getCurrentState() {
-        return currentState;
-    }
-
-    public void setCurrentState(String currentState) {
-        this.currentState = currentState;
-    }
-
-    public String getNextStep() {
-        return nextStep;
-    }
-
-    public void setNextStep(String nextStep) {
-        this.nextStep = nextStep;
-    }
-
-    public String getReservationType() {
-        return reservationType;
-    }
-
-    public void setReservationType(String reservationType) {
-        this.reservationType = reservationType;
-    }
-
-    public List<String> getReservationStep() {
-        return reservationStep;
-    }
-
-    public void setReservationStep(List<String> reservationStep) {
-        this.reservationStep = reservationStep;
-    }
-
-    public String getStepStatus() {
-        return stepStatus;
-    }
-
-    public void setStepStatus(String stepStatus) {
-        this.stepStatus = stepStatus;
+    public void setCollectFlag(String collectFlag) {
+        this.collectFlag = collectFlag;
     }
 
     public int getEvaluateLevel() {
@@ -148,7 +98,7 @@ public class OrderBean {
     }
 
     public String getEvaluateContent() {
-        return evaluateContent;
+        return evaluateContent == null ? "" : evaluateContent;
     }
 
     public void setEvaluateContent(String evaluateContent) {

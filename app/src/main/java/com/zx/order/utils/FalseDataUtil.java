@@ -33,7 +33,7 @@ public class FalseDataUtil {
      * @return
      */
     public static List<ClearanceBean> getHomePageTab1Data() {
-        List<ClearanceBean> dataList = new ArrayList<>();
+        /*List<ClearanceBean> dataList = new ArrayList<>();
 
         ClearanceBean bean = new ClearanceBean();
         bean.setShipNameContext("ZCSU5846054");
@@ -81,9 +81,9 @@ public class FalseDataUtil {
         bean5.setActualBerthingDate(DateUtil.parseDate("2018-06-25").getTime());
         bean5.setPortOfDestination("广州");
         bean5.setBoxNum("750");
-        dataList.add(bean5);
+        dataList.add(bean5);*/
 
-        return dataList;
+        return null;
     }
 
     /**
@@ -92,7 +92,7 @@ public class FalseDataUtil {
      * @return
      */
     public static List<FlightVoyageBean> getFlightVoyageData() {
-        List<FlightVoyageBean> dataList = new ArrayList<>();
+        /*List<FlightVoyageBean> dataList = new ArrayList<>();
 
         FlightVoyageBean bean = new FlightVoyageBean();
         bean.setBillOfLadingNumContext("ZCSU5846054");
@@ -140,9 +140,9 @@ public class FalseDataUtil {
         bean5.setDeclareStatus("放行");
         bean5.setInspectionStatus("待查");
         bean5.setBoxNum("750");
-        dataList.add(bean5);
+        dataList.add(bean5);*/
 
-        return dataList;
+        return null;
     }
 
     /**
@@ -188,7 +188,7 @@ public class FalseDataUtil {
     public static List<BoxStatusBean> getBoxStatusData() {
         List<BoxStatusBean> dataList = new ArrayList<>();
 
-        BoxStatusBean bean = new BoxStatusBean();
+        /*BoxStatusBean bean = new BoxStatusBean();
         bean.setContainerNo("ZCSU5846054");
         bean.setSuitcaseCarNo("辽B12345");
         bean.setReturnBoxDate(DateUtil.parseDate("2018-05-20").getTime());
@@ -220,7 +220,7 @@ public class FalseDataUtil {
 
         dataList.add(bean);
         dataList.add(bean1);
-        dataList.add(bean2);
+        dataList.add(bean2);*/
 
         return dataList;
     }
@@ -232,7 +232,7 @@ public class FalseDataUtil {
      */
     public static List<ReservationBean> getReservationData() {
         List<ReservationBean> dataList = new ArrayList<>();
-        ReservationBean bean = new ReservationBean();
+        /*ReservationBean bean = new ReservationBean();
         bean.setBillLadingNo("456456ASDF");
         bean.setNumber("12");
         dataList.add(bean);
@@ -255,7 +255,7 @@ public class FalseDataUtil {
         ReservationBean bean5 = new ReservationBean();
         bean5.setBillLadingNo("YUFRYTUTYU");
         bean5.setNumber("555");
-        dataList.add(bean5);
+        dataList.add(bean5);*/
         return dataList;
     }
 
@@ -267,8 +267,8 @@ public class FalseDataUtil {
      */
     public static List<StatusBean> getFrozenFruitsData(String type) {
         String[] str;
-        if (StrUtil.equals(type, "1")) {
-            str = new String[]{"报关", "看货", "对扒", "入库", "取样", "出库", "配送", "看货", "预约"};
+        /*if (StrUtil.equals(type, "1")) {
+            str = new String[]{"报关", "看货", "对扒", "入库", "取样", "出库", "配送"};
         } else {
             str = new String[]{"报关", "看货", "诉提", "入库", "熏蒸", "取样", "出库"};
         }
@@ -284,8 +284,8 @@ public class FalseDataUtil {
             }
             statusBean.setStatusList(statusList);
             statusBeans.add(statusBean);
-        }
-        return statusBeans;
+        }*/
+        return null;
     }
 
     /**
@@ -406,7 +406,7 @@ public class FalseDataUtil {
      */
     public static List<OrderBean> getOrderData() {
         List<OrderBean> dataList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             OrderBean bean = new OrderBean();
             bean.setBillOfLadingNo("asdfajksldf");
             bean.setBillStatus("齐全");
@@ -414,7 +414,7 @@ public class FalseDataUtil {
             bean.setInspectionStatus("已查");
             bean.setBoxNum("20" + i);
             dataList.add(bean);
-        }
+        }*/
         return dataList;
     }
 
@@ -457,11 +457,11 @@ public class FalseDataUtil {
         List<OrderBean> dataList = new ArrayList<>();
         for (int i = 0; i < strList.size(); i++) {
             OrderBean bean = new OrderBean();
-            if (i == 2) {
+            /*if (i == 2) {
                 bean.setCollection(true);
             }
             bean.setCurrentState(strCurrentState[i]);
-            bean.setReservationStep(Arrays.asList(strList.get(i)));
+            bean.setReservationStep(Arrays.asList(strList.get(i)));*/
             dataList.add(bean);
         }
         return dataList;
@@ -503,7 +503,7 @@ public class FalseDataUtil {
         reservationStepList.add(strStep5);
         String[] stepStatus = new String[]{"已处理 " + date, "未处理 " + date};
         List<OrderBean> dataList = new ArrayList<>();
-        for (int i = 0; i < reservationType.length; i++) {
+        /*for (int i = 0; i < reservationType.length; i++) {
             OrderBean bean = new OrderBean();
             bean.setReservationType(reservationType[i]);
             bean.setReservationStep(Arrays.asList(reservationStepList.get(i)));
@@ -513,7 +513,7 @@ public class FalseDataUtil {
                 bean.setStepStatus(stepStatus[1]);
             }
             dataList.add(bean);
-        }
+        }*/
         return dataList;
     }
 
@@ -524,7 +524,7 @@ public class FalseDataUtil {
      */
     public static List<EntrustingTheHarbourBean> getEntrustingData() {
         List<EntrustingTheHarbourBean> dataList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        /*for (int i = 0; i < 6; i++) {
             EntrustingTheHarbourBean bean = new EntrustingTheHarbourBean();
             bean.setBillOfLadingNo("123456789");
             bean.setEnglishShipName("EnglishShipName");
@@ -534,7 +534,7 @@ public class FalseDataUtil {
             bean.setImportVoyage("111111111");
             bean.setHarbourDredge("大连");
             dataList.add(bean);
-        }
+        }*/
         return dataList;
     }
 
@@ -545,13 +545,13 @@ public class FalseDataUtil {
      */
     public static List<InspectionCommissionBean> getInspectionCommissionData() {
         List<InspectionCommissionBean> dataList = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        /*for (int i = 0; i < 6; i++) {
             InspectionCommissionBean bean = new InspectionCommissionBean();
             bean.setNavigationalName("美国至大连");
             bean.setVoyageNum("K123456");
             bean.setWharf("珍珠港");
             dataList.add(bean);
-        }
+        }*/
         return dataList;
     }
 
@@ -598,6 +598,10 @@ public class FalseDataUtil {
     public static InspectionCommissionBean getInspectionCommissionSubmitData() {
         String[] txtNameList = new String[]{"委托类型", "检查类型", "委托方", "受理方", "复查复验", "查验箱所在地",
                 "货物名称", "包装", "件数", "报关单号", "危品类型", "危品等级", "联系人", "联系电话", "发票头名信息"};
+        String[] submitFieldNameList = new String[]{"entrustType", "inspectionType", "entrust", "handSide", "recheckFlg", "locationOfInspectionBox",
+                "cargoName", "packaging", "pieces", "customNo", "lsdType", "lsdLevel", "linkName", "linkTel", "invoiceTitle"};
+        boolean[] isMust = new boolean[]{true, true, true, true, true, true,
+                true, true, true, true, false, false, true, true, false};
         String[] controlTypeList = new String[]{"1", "1", "1", "2", "2", "2", "1",
                 "2", "1", "1", "2", "2", "1", "1", "1"};
         String[] options = new String[]{"条件1", "条件2", "条件3", "条件4", "条件5", "条件6"};
@@ -616,6 +620,8 @@ public class FalseDataUtil {
             beanContent.setTxtName(txtNameList[j]);
             beanContent.setControlType(controlTypeList[j]);
             beanContent.setOptions(optionList);
+            beanContent.setSubmitFieldName(submitFieldNameList[j]);
+            beanContent.setMust(isMust[j]);
             beans.add(beanContent);
         }
         bean.setNextDataList(beans);

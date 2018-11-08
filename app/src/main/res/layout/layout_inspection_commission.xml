@@ -324,14 +324,34 @@
             android:layout_weight="1"
             android:background="@color/gray" />
 
-        <Button
-            android:id="@+id/btnSearch"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/forty"
             android:layout_margin="@dimen/ten_dp"
-            android:background="@drawable/btn_blue"
-            android:text="@string/query"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fourteen_sp" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/forty"
+                android:layout_marginRight="@dimen/five_dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_blue"
+                android:text="@string/reset"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/forty"
+                android:layout_marginLeft="@dimen/five_dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_blue"
+                android:text="@string/query"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

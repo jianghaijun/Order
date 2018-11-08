@@ -40,13 +40,13 @@ public class BoxStatusAdapter extends RecyclerView.Adapter<BoxStatusAdapter.BoxS
     public void onBindViewHolder(BoxStatusHolder holder, int position) {
         BoxStatusBean bean = mDataList.get(position);
 
-        holder.txtContainerNo.setText(bean.getContainerNo());
-        holder.txtSuitcaseCarNo.setText("提箱车号：" + bean.getSuitcaseCarNo());
-        holder.txtReturnBoxDate.setText("返箱日期：" + DateUtils.setDataToStr(bean.getReturnBoxDate()));
-        holder.txtBoxEntryTime.setText("箱进场时间：" + DateUtils.setDataToStr2(bean.getBoxEntryTime()));
-        holder.txtArrivalTime.setText("运抵发送时间时间：" + DateUtils.setDataToStr2(bean.getArrivalTime()));
-        holder.txtApproachTimeOfSuitcaseVehicle.setText("提箱车辆进场时间：" + DateUtils.setDataToStr2(bean.getApproachTimeOfSuitcaseVehicle()));
-        holder.txtBoxDrivingTime.setText("箱出场时间：" + DateUtils.setDataToStr2(bean.getBoxDrivingTime()));
+        holder.txtContainerNo.setText(bean.getCntrNo());
+        holder.txtSuitcaseCarNo.setText("提箱车号：" + bean.getOutTruckNo());
+        holder.txtReturnBoxDate.setText("返箱日期：" + DateUtils.setDataToStr(bean.getRetDate()));
+        holder.txtBoxEntryTime.setText("箱进场时间：" + DateUtils.setDataToStr2(bean.getInCntrTime()));
+        holder.txtArrivalTime.setText("运抵发送时间：" + DateUtils.setDataToStr2(bean.getArrivalTime()));
+        holder.txtApproachTimeOfSuitcaseVehicle.setText("提箱车辆进场时间：" + DateUtils.setDataToStr2(bean.getVehicleDateOfSuitcase()));
+        holder.txtBoxDrivingTime.setText("箱出场时间：" + DateUtils.setDataToStr2(bean.getOutCntrTime()));
 
         LinearLayout.LayoutParams lvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lvp.setMargins(0, DensityUtil.dip2px(10), 0, 0);

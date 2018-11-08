@@ -91,8 +91,8 @@ public class ReservationCla {
 
         holder.tlTop.setupWithViewPager(holder.vpReservation);
 
-        frozenCla.setDate("1");
-        fruitsCla.setDate("2");
+        frozenCla.setDate("0");
+        fruitsCla.setDate("1");
         individualCla.setDate();
     }
 

@@ -1,66 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="200dp"
+        android:background="@null"
+        android:orientation="vertical">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+        <ImageView
+            android:id="@+id/ivBg"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleGravity="center"
-            app:collapsedTitleTextAppearance="@style/TitleTextAppearance"
-            app:contentScrim="@color/main_bg"
-            app:expandedTitleMarginBottom="@dimen/twenty_dp"
-            app:expandedTitleTextAppearance="@style/TitleTextAppearance"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/thirty"
+            android:layout_marginLeft="@dimen/twenty_dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@null"
-                android:orientation="vertical"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7">
+            <ImageView
+                android:id="@+id/ivHead"
+                android:layout_width="@dimen/eighty_dp"
+                android:layout_height="@dimen/eighty_dp"
+                android:background="@null" />
 
-                <ImageView
-                    android:id="@+id/ivBg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY" />
-
-                <ImageView
-                    android:id="@+id/ivHead"
-                    android:layout_width="@dimen/eighty_dp"
-                    android:layout_height="@dimen/eighty_dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="@dimen/fifty_dp"
-                    android:layout_marginLeft="@dimen/twenty_dp"
-                    android:background="@null"
-                    android:src="@drawable/user_avatar"
-                    app:layout_collapseMode="parallax" />
-            </RelativeLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:contentInsetLeft="@dimen/zero_dp"
-                app:contentInsetStart="@dimen/zero_dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:titleEnabled="false" />
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/twenty_sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/view_pager"
@@ -174,7 +153,26 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/one_dp"
             android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/logout"
+            android:drawablePadding="@dimen/ten_dp"
+            android:drawableRight="@drawable/right_arrows"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/logout"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
     </LinearLayout>
-
-
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

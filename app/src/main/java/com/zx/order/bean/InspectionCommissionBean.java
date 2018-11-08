@@ -1,6 +1,8 @@
 package com.zx.order.bean;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 查验委托
@@ -9,13 +11,16 @@ import java.util.List;
  * Q Q: 1320666709
  */
 public class InspectionCommissionBean {
-    private String navigationalName;        // 航名
-    private String voyageNum;               // 航次
-    private String wharf;                   // 码头
+    private String voyageId;                // 航次Id
+    private String cntrId;                  // 箱号Id
+    private String chVslname;               // 船名
+    private String voyage;                  // 航次
+    private String port;                    // 码头
     private boolean isSelect = false;       // 是否选中
     private List<InspectionCommissionBean> nextDataList; // 下一步列表数据
     private String txtName;                 // key
     private String txtContent;              // value
+    private String submitFieldName;         // 提交时字段名称
     private String txtColor;                // 颜色
     private String txtSize;                 // 大小
     private boolean isMust;                 // 是否必须
@@ -28,29 +33,54 @@ public class InspectionCommissionBean {
     private String selectOptionId;          // 下拉框默认选中ID
     private String option;                  // 选项
     private String optionId;                // 选项ID
+    private List<Map<String, Object>> submitList = new ArrayList<>(); // 提交数据
 
-    public String getNavigationalName() {
-        return navigationalName;
+    public String getVoyageId() {
+        return voyageId == null ? "" : voyageId;
     }
 
-    public void setNavigationalName(String navigationalName) {
-        this.navigationalName = navigationalName;
+    public void setVoyageId(String voyageId) {
+        this.voyageId = voyageId;
     }
 
-    public String getVoyageNum() {
-        return voyageNum;
+    public String getCntrId() {
+        return cntrId == null ? "" : cntrId;
     }
 
-    public void setVoyageNum(String voyageNum) {
-        this.voyageNum = voyageNum;
+    public void setCntrId(String cntrId) {
+        this.cntrId = cntrId;
     }
 
-    public String getWharf() {
-        return wharf;
+    public String getChVslname() {
+        return chVslname == null ? "" : chVslname;
     }
 
-    public void setWharf(String wharf) {
-        this.wharf = wharf;
+    public void setChVslname(String chVslname) {
+        this.chVslname = chVslname;
+    }
+
+    public String getSubmitFieldName() {
+        return submitFieldName == null ? "" : submitFieldName;
+    }
+
+    public void setSubmitFieldName(String submitFieldName) {
+        this.submitFieldName = submitFieldName;
+    }
+
+    public String getVoyage() {
+        return voyage == null ? "" : voyage;
+    }
+
+    public void setVoyage(String voyage) {
+        this.voyage = voyage;
+    }
+
+    public String getPort() {
+        return port == null ? "" : port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 
     public boolean isSelect() {
@@ -62,6 +92,9 @@ public class InspectionCommissionBean {
     }
 
     public List<InspectionCommissionBean> getNextDataList() {
+        if (nextDataList == null) {
+            return new ArrayList<>();
+        }
         return nextDataList;
     }
 
@@ -70,7 +103,7 @@ public class InspectionCommissionBean {
     }
 
     public String getTxtName() {
-        return txtName;
+        return txtName == null ? "" : txtName;
     }
 
     public void setTxtName(String txtName) {
@@ -78,7 +111,7 @@ public class InspectionCommissionBean {
     }
 
     public String getTxtContent() {
-        return txtContent;
+        return txtContent == null ? "" : txtContent;
     }
 
     public void setTxtContent(String txtContent) {
@@ -86,7 +119,7 @@ public class InspectionCommissionBean {
     }
 
     public String getTxtColor() {
-        return txtColor;
+        return txtColor == null ? "" : txtColor;
     }
 
     public void setTxtColor(String txtColor) {
@@ -94,7 +127,7 @@ public class InspectionCommissionBean {
     }
 
     public String getTxtSize() {
-        return txtSize;
+        return txtSize == null ? "" : txtSize;
     }
 
     public void setTxtSize(String txtSize) {
@@ -110,7 +143,7 @@ public class InspectionCommissionBean {
     }
 
     public String getHint() {
-        return hint;
+        return hint == null ? "" : hint;
     }
 
     public void setHint(String hint) {
@@ -126,7 +159,7 @@ public class InspectionCommissionBean {
     }
 
     public String getDateTimeType() {
-        return dateTimeType;
+        return dateTimeType == null ? "" : dateTimeType;
     }
 
     public void setDateTimeType(String dateTimeType) {
@@ -134,7 +167,7 @@ public class InspectionCommissionBean {
     }
 
     public String getControlType() {
-        return controlType;
+        return controlType == null ? "" : controlType;
     }
 
     public void setControlType(String controlType) {
@@ -142,6 +175,9 @@ public class InspectionCommissionBean {
     }
 
     public List<InspectionCommissionBean> getOptions() {
+        if (options == null) {
+            return new ArrayList<>();
+        }
         return options;
     }
 
@@ -150,7 +186,7 @@ public class InspectionCommissionBean {
     }
 
     public String getSelectOption() {
-        return selectOption;
+        return selectOption == null ? "" : selectOption;
     }
 
     public void setSelectOption(String selectOption) {
@@ -158,7 +194,7 @@ public class InspectionCommissionBean {
     }
 
     public String getSelectOptionId() {
-        return selectOptionId;
+        return selectOptionId == null ? "" : selectOptionId;
     }
 
     public void setSelectOptionId(String selectOptionId) {
@@ -166,7 +202,7 @@ public class InspectionCommissionBean {
     }
 
     public String getOption() {
-        return option;
+        return option == null ? "" : option;
     }
 
     public void setOption(String option) {
@@ -174,10 +210,21 @@ public class InspectionCommissionBean {
     }
 
     public String getOptionId() {
-        return optionId;
+        return optionId == null ? "" : optionId;
     }
 
     public void setOptionId(String optionId) {
         this.optionId = optionId;
+    }
+
+    public List<Map<String, Object>> getSubmitList() {
+        if (submitList == null) {
+            return new ArrayList<>();
+        }
+        return submitList;
+    }
+
+    public void setSubmitList(List<Map<String, Object>> submitList) {
+        this.submitList = submitList;
     }
 }

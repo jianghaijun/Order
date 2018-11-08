@@ -5,6 +5,8 @@
 
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 读取内存卡权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 在SD卡中创建与删除文件权限 -->
     <uses-permission
         android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS"
@@ -22,7 +24,8 @@
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
 
     <supports-screens
@@ -46,17 +49,20 @@
             android:name="com.zx.order.utils.GlideConfiguration"
             android:value="GlideModule" />
 
+        <!-- android7.0照相处理 -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileProvider"
+            android:name="com.zx.order.provider.ImagePickerProvider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths"
+                tools:replace="name,resource" />
         </provider>
 
-        <!--首页-->
+        <!--起始页-->
         <activity
             android:name=".activity.SplashScreenAct"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -72,6 +78,11 @@
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
+        <!--登录页-->
+        <activity
+            android:name=".activity.LoginAct"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
         <!--首页-->
         <activity
             android:name=".activity.MainPageAct"
@@ -136,6 +147,11 @@
         <!--集装箱信息详情-->
         <activity
             android:name=".activity.ContainerDetailsAct"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <!--展示图片-->
+        <activity
+            android:name=".activity.ShowPhotosAct"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
     </application>

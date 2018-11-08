@@ -22,7 +22,9 @@ import com.zx.order.utils.ToastUtil;
 import org.xutils.common.util.DensityUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.hutool.core.util.StrUtil;
 
@@ -76,6 +78,8 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
      * @param holder
      */
     private void initData(InspectionCommissionBean dataBean, ReservationHolder holder) {
+        holder.llContent.removeAllViews();
+
         List<InspectionCommissionBean> beanList = dataBean.getNextDataList();
         if (beanList != null && beanList.size() > 0) {
             int size = beanList.size();
@@ -96,11 +100,11 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
 
             holder.llTitle.addView(addNewTitleTxt(titleBean), titleKeyLp);
             if (StrUtil.equals(titleBean.getControlType(), "1")) {
-                holder.llTitle.addView(addNewEdt(titleBean), titleValLp);
+                holder.llTitle.addView(addNewEdt(titleBean, dataBean), titleValLp);
             } else if (StrUtil.equals(titleBean.getControlType(), "2")) {
-                holder.llTitle.addView(addNewSelect(titleBean), titleValLp);
+                holder.llTitle.addView(addNewSelect(titleBean, dataBean), titleValLp);
             } else if (StrUtil.equals(titleBean.getControlType(), "3")) {
-                holder.llTitle.addView(addNewDate(titleBean), titleValLp);
+                holder.llTitle.addView(addNewDate(titleBean, dataBean), titleValLp);
             }
 
             int contentSize = (size - 1) / 2;
@@ -115,11 +119,11 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
                     llLeft.setOrientation(LinearLayout.HORIZONTAL);
                     llLeft.addView(addNewTitleTxt(leftBean), titleKeyLp);
                     if (StrUtil.equals(leftBean.getControlType(), "1")) {
-                        llLeft.addView(addNewEdt(leftBean), titleValLp2);
+                        llLeft.addView(addNewEdt(leftBean, dataBean), titleValLp2);
                     } else if (StrUtil.equals(leftBean.getControlType(), "2")) {
-                        llLeft.addView(addNewSelect(leftBean), titleValLp2);
+                        llLeft.addView(addNewSelect(leftBean, dataBean), titleValLp2);
                     } else if (StrUtil.equals(leftBean.getControlType(), "3")) {
-                        llLeft.addView(addNewDate(leftBean), titleValLp2);
+                        llLeft.addView(addNewDate(leftBean, dataBean), titleValLp2);
                     }
                     llContent.addView(llLeft, mmw);
                 }
@@ -130,11 +134,11 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
                     llRight.setOrientation(LinearLayout.HORIZONTAL);
                     llRight.addView(addNewTitleTxt(rightBean), titleKeyLp);
                     if (StrUtil.equals(rightBean.getControlType(), "1")) {
-                        llRight.addView(addNewEdt(rightBean), titleValLp2);
+                        llRight.addView(addNewEdt(rightBean, dataBean), titleValLp2);
                     } else if (StrUtil.equals(rightBean.getControlType(), "2")) {
-                        llRight.addView(addNewSelect(rightBean), titleValLp2);
+                        llRight.addView(addNewSelect(rightBean, dataBean), titleValLp2);
                     } else if (StrUtil.equals(rightBean.getControlType(), "3")) {
-                        llRight.addView(addNewDate(rightBean), titleValLp2);
+                        llRight.addView(addNewDate(rightBean, dataBean), titleValLp2);
                     }
                     llContent.addView(llRight, mmw);
                 }
@@ -162,9 +166,10 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
      * 添加一个EditText
      *
      * @param bean 文本样式
+     * @param dataBean 文本样式
      * @return
      */
-    private EditText addNewEdt(InspectionCommissionBean bean) {
+    private EditText addNewEdt(InspectionCommissionBean bean, InspectionCommissionBean dataBean) {
         EditText edt = new EditText(mContext);
         edt.setText(bean.getTxtContent());
         edt.setTextColor(ContextCompat.getColor(mContext, R.color.dark_b));
@@ -173,6 +178,12 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
         edt.setHint(bean.getHint());
         edt.setBackground(ContextCompat.getDrawable(mContext, R.drawable.gray_stroke_white_solid_bg));
         edt.setPadding(DensityUtil.dip2px(5), DensityUtil.dip2px(5), DensityUtil.dip2px(5), DensityUtil.dip2px(5));
+
+        Map<String, Object> objMap = new HashMap<>();
+        objMap.put("controlType", "1");
+        objMap.put("control", edt);
+        objMap.put("submitFieldName", bean.getSubmitFieldName());
+        dataBean.getSubmitList().add(objMap);
         return edt;
     }
 
@@ -180,15 +191,16 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
      * 添加一个下拉框
      *
      * @param bean 文本样式
+     * @param dataBean 文本样式
      * @return
      */
-    private TextView addNewSelect(final InspectionCommissionBean bean) {
+    private TextView addNewSelect(final InspectionCommissionBean bean, InspectionCommissionBean dataBean) {
         final TextView txt = new TextView(mContext);
-        txt.setText(bean.getTxtContent());
+        txt.setText(bean.getSelectOption());
+        txt.setHint(bean.getSelectOptionId());
         txt.setTextColor(ContextCompat.getColor(mContext, R.color.dark_b));
         txt.setTextSize(StrUtil.isEmpty(bean.getTxtSize()) ? 14 : Integer.parseInt(bean.getTxtSize()));
         txt.setGravity(Gravity.LEFT | Gravity.CENTER);
-        txt.setHint(bean.getHint());
         txt.setBackground(ContextCompat.getDrawable(mContext, R.drawable.gray_stroke_white_solid_bg));
         txt.setPadding(DensityUtil.dip2px(5), DensityUtil.dip2px(5), DensityUtil.dip2px(5), DensityUtil.dip2px(5));
         Drawable rightDrawable = ContextCompat.getDrawable(mContext, R.drawable.drop_down);
@@ -197,7 +209,7 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<InspectionCommissionBean> beans = bean.getOptions();
+                final List<InspectionCommissionBean> beans = bean.getOptions();
                 if (beans == null || beans.size() == 0) {
                     ToastUtil.showShort(mContext, "暂无数据！");
                 } else {
@@ -209,11 +221,18 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
                         @Override
                         public void selectPoint(int point) {
                             txt.setText(strList.get(point));
+                            txt.setHint(beans.get(point).getOptionId());
                         }
                     });
                 }
             }
         });
+
+        Map<String, Object> objMap = new HashMap<>();
+        objMap.put("controlType", "2");
+        objMap.put("control", txt);
+        objMap.put("submitFieldName", bean.getSubmitFieldName());
+        dataBean.getSubmitList().add(objMap);
 
         return txt;
     }
@@ -222,9 +241,10 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
      * 添加一个日期选择控件
      *
      * @param bean 文本样式
+     * @param dataBean 文本样式
      * @return
      */
-    private TextView addNewDate(final InspectionCommissionBean bean) {
+    private TextView addNewDate(final InspectionCommissionBean bean, InspectionCommissionBean dataBean) {
         final TextView txt = new TextView(mContext);
         txt.setText(bean.getTxtContent());
         txt.setTextColor(ContextCompat.getColor(mContext, R.color.dark_b));
@@ -250,6 +270,12 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
                 }
             }
         });
+
+        Map<String, Object> objMap = new HashMap<>();
+        objMap.put("controlType", "3");
+        objMap.put("control", txt);
+        objMap.put("submitFieldName", bean.getSubmitFieldName());
+        dataBean.getSubmitList().add(objMap);
 
         return txt;
     }

@@ -6,13 +6,17 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 import com.zx.order.R;
+import com.zx.order.utils.ToastUtil;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.util.ArrayList;
+
+import cn.hutool.core.util.StrUtil;
 
 
 /**
@@ -61,7 +65,19 @@ public class HomePageCla {
 
         holder.tlTop.setupWithViewPager(holder.vpHomePage);
 
-        homePageTab1.setDate();
+        homePageTab1.setDate("");
+    }
+
+    /**
+     * 搜索
+     */
+    public void search() {
+        EditText edtSearchContext = (EditText) layTab1.findViewById(R.id.edtSearchContext);
+        if (StrUtil.isEmpty(edtSearchContext.getText().toString())) {
+            ToastUtil.showShort(mContext, "请输入检索条件！");
+        } else {
+            homePageTab1.setDate(edtSearchContext.getText().toString());
+        }
     }
 
     /**

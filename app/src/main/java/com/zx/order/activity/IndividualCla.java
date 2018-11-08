@@ -41,7 +41,6 @@ public class IndividualCla {
         holder.rvIndividualType.setAdapter(typeAdapter);
     }
 
-
     /**
      * 容纳器
      */

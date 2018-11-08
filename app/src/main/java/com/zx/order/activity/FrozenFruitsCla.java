@@ -6,12 +6,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.zx.order.R;
 import com.zx.order.adapter.ReservationAdapter;
 import com.zx.order.bean.ReservationBean;
+import com.zx.order.model.ReservationModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.FalseDataUtil;
@@ -28,6 +30,7 @@ import java.util.List;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -56,7 +59,7 @@ public class FrozenFruitsCla {
     /**
      * 赋值
      *
-     * @param frozenFruitsType 1:冻品 2:水果
+     * @param frozenFruitsType 0:冻品 1:水果
      */
     public void setDate(String frozenFruitsType) {
         this.frozenFruitsType = frozenFruitsType;
@@ -79,13 +82,13 @@ public class FrozenFruitsCla {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -95,41 +98,35 @@ public class FrozenFruitsCla {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
 
-        /*if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData("", true);
+        if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
+            getData(StrUtil.equals(frozenFruitsType, "0"));
         } else {
             ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
-        }*/
-
-        dataList = FalseDataUtil.getReservationData();
-        setFrozenFruitsData();
+        }
     }
 
     /**
-     * 获取工序列表
+     * 获取数据
      *
-     * @param searchContext
+     * @param isLoading 是否显示加载框
      */
-    private void getData(final String searchContext, final boolean isLoading) {
+    private void getData(final boolean isLoading) {
         if (isLoading) {
             LoadingUtils.showLoading(mContext);
         }
         JSONObject obj = new JSONObject();
         obj.put("page", pagePosition);
         obj.put("limit", 10);
-        if (!StrUtil.isEmpty(searchContext)) {
-            obj.put("keyword", searchContext);
-        }
-        Request request = ChildThreadUtil.getRequest(mContext, "", obj.toString());
+        obj.put("billType", frozenFruitsType);
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.BILL_LIST, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -140,15 +137,19 @@ public class FrozenFruitsCla {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonData = response.body().string().toString();
-                /*if (JSONUtil.isJson(jsonData)) {
+                if (JSONUtil.isJson(jsonData)) {
                     Gson gson = new Gson();
-                    final WorkingListModel model = gson.fromJson(jsonData, WorkingListModel.class);
+                    final ReservationModel model = gson.fromJson(jsonData, ReservationModel.class);
                     if (model.isSuccess()) {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    dataList.addAll(model.getData());
+                                }
                                 stopLoad();
-                                setClearanceData();
+                                setFrozenFruitsData();
                                 LoadingUtils.hideLoading();
                             }
                         });
@@ -159,7 +160,7 @@ public class FrozenFruitsCla {
                 } else {
                     stopLoad();
                     ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
-                }*/
+                }
             }
         });
     }

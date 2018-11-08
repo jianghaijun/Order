@@ -276,4 +276,33 @@ public class DateUtils {
         return strDate;
     }
 
+    /**
+     * 获取系统当前日期
+     * yyyy-MM-dd
+     *
+     * @param lData
+     * @return
+     */
+    public static String setDataToStr3(long lData) {
+        Date date = DateUtil.date(lData == 0 ? System.currentTimeMillis() : lData);
+        String strDate = DateUtil.format(date, "yyyy-MM-dd hh:mm:ss");
+        return strDate;
+    }
+
+    /**
+     * 获取系统当前日期
+     *
+     * @param lData
+     * @return
+     */
+    public static String setDataToStr4(long lData) {
+        if (lData == 0) {
+            return "无";
+        }
+
+        Date date = DateUtil.date(lData);
+        String strDate = DateUtil.format(date, "yyyy-MM-dd hh:mm:ss");
+        return strDate;
+    }
+
 }

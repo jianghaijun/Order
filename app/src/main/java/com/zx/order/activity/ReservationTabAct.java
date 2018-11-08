@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
@@ -18,9 +19,9 @@ import com.zx.order.R;
 import com.zx.order.adapter.FrozenFruitsAdapter;
 import com.zx.order.base.BaseActivity;
 import com.zx.order.bean.StatusBean;
+import com.zx.order.model.FrozenFruitsDetailModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -63,7 +65,8 @@ public class ReservationTabAct extends BaseActivity {
     private List<StatusBean> dataList = new ArrayList<>();
     private FrozenFruitsAdapter frozenFruitsAdapter;
     private Activity mContext;
-    private String frozenFruitsType; // 1:冻品 2:水果
+    private String frozenFruitsType; // 0:冻品 1:水果
+    private String[] str;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,16 +80,25 @@ public class ReservationTabAct extends BaseActivity {
 
         actionBar.setVisibility(View.VISIBLE);
         imgBtnLeft.setVisibility(View.VISIBLE);
-        if (StrUtil.equals(frozenFruitsType, "1")) {
+        if (StrUtil.equals(frozenFruitsType, "0")) {
             txtTitle.setText("冻品信息列表");
         } else {
             txtTitle.setText("水果信息列表");
         }
         imgBtnLeft.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.back_btn));
 
+        if (StrUtil.equals(frozenFruitsType, "0")) {
+            str = new String[]{"报关&0", "看货&1", "对扒&2", "入库&3", "取样&4", "出库&5", "配送&6"};
+        } else {
+            str = new String[]{"报关&0", "看货&1", "诉提&7", "入库&3", "熏蒸&8", "取样&4", "出库&5"};
+        }
+
         initData();
     }
 
+    /**
+     * 初始化
+     */
     private void initData() {
         // 设置主题颜色
         refreshLayout.setPrimaryColorsId(R.color.main_bg, android.R.color.white);
@@ -106,13 +118,13 @@ public class ReservationTabAct extends BaseActivity {
                 if (dataList.size() < dataTotalNum) {
                     pagePosition++;
                     if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                        //getData("", false);
+                        getData(false);
                     } else {
                         ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
                     }
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
 
@@ -122,41 +134,35 @@ public class ReservationTabAct extends BaseActivity {
                 pagePosition = 1;
                 dataList.clear();
                 if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-                    //getData("", false);
-                    stopLoad();
+                    getData(false);
                 } else {
                     ToastUtil.showShort(mContext, "没有更多数据了！");
-                    refreshLayout.finishLoadMore(1000);
+                    refreshLayout.finishLoadMore(ConstantsUtil.REFRESH_WAITING_TIME);
                 }
             }
         });
 
-        /*if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData("", true);
+        if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
+            getData(true);
         } else {
             ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
-        }*/
-
-        dataList = FalseDataUtil.getFrozenFruitsData(frozenFruitsType);
-        setFrozenFruitsData();
+        }
     }
 
     /**
-     * 获取工序列表
+     * 获取数据
      *
-     * @param searchContext
+     * @param isLoading 是否显示加载框
      */
-    private void getData(final String searchContext, final boolean isLoading) {
+    private void getData(final boolean isLoading) {
         if (isLoading) {
             LoadingUtils.showLoading(mContext);
         }
         JSONObject obj = new JSONObject();
         obj.put("page", pagePosition);
         obj.put("limit", 10);
-        if (!StrUtil.isEmpty(searchContext)) {
-            obj.put("keyword", searchContext);
-        }
-        Request request = ChildThreadUtil.getRequest(mContext, "", obj.toString());
+        obj.put("cargoBillId", getIntent().getStringExtra("cargoBillId"));
+        Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.CNTR_LIST, obj.toString());
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -167,15 +173,31 @@ public class ReservationTabAct extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonData = response.body().string().toString();
-                /*if (JSONUtil.isJson(jsonData)) {
+                if (JSONUtil.isJson(jsonData)) {
                     Gson gson = new Gson();
-                    final WorkingListModel model = gson.fromJson(jsonData, WorkingListModel.class);
+                    final FrozenFruitsDetailModel model = gson.fromJson(jsonData, FrozenFruitsDetailModel.class);
                     if (model.isSuccess()) {
                         mContext.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dataTotalNum = model.getTotalNumber();
+                                if (model.getData() != null) {
+                                    for (StatusBean statusBean : model.getData()) {
+                                        List<StatusBean> statusList = new ArrayList<>();
+                                        for (String s : str) {
+                                            StatusBean bean = new StatusBean();
+                                            bean.setTitle(s.substring(0, 2));
+                                            bean.setId(s.substring(3));
+                                            bean.setSelect(StrUtil.containsAny(statusBean.getOrderType(), bean.getId()));
+                                            statusList.add(bean);
+                                        }
+                                        statusBean.setStatusList(statusList);
+                                    }
+
+                                    dataList.addAll(model.getData());
+                                }
                                 stopLoad();
-                                setClearanceData();
+                                setFrozenFruitsData();
                                 LoadingUtils.hideLoading();
                             }
                         });
@@ -186,7 +208,7 @@ public class ReservationTabAct extends BaseActivity {
                 } else {
                     stopLoad();
                     ChildThreadUtil.toastMsgHidden(mContext, mContext.getString(R.string.json_error));
-                }*/
+                }
             }
         });
     }
@@ -196,7 +218,7 @@ public class ReservationTabAct extends BaseActivity {
      */
     private void setFrozenFruitsData() {
         if (frozenFruitsAdapter == null) {
-            frozenFruitsAdapter = new FrozenFruitsAdapter(dataList);
+            frozenFruitsAdapter = new FrozenFruitsAdapter(dataList, getIntent().getStringExtra("cargoBillId"));
             rvOrderList.setLayoutManager(new GridLayoutManager(mContext, 1));
             rvOrderList.setAdapter(frozenFruitsAdapter);
         } else {

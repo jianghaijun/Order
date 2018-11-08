@@ -1,22 +1,16 @@
 package com.zx.order.base;
 
 /**
- * Created by HaiJun on 2018/6/11 17:17
  * 基类model
+ * 作者：JHJ
+ * 日期：2018/10/30 14:43
+ * Q Q: 1320666709
  */
 public class BaseModel {
     private boolean success;
     private String message;
-    private String fileUrl;
     private int code;
-
-    public String getFileUrl() {
-        return fileUrl == null ? "" : fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
+    private int totalNumber;
 
     public boolean isSuccess() {
         return success;
@@ -27,7 +21,7 @@ public class BaseModel {
     }
 
     public String getMessage() {
-        return message;
+        return message == null ? "" : message;
     }
 
     public void setMessage(String message) {
@@ -40,5 +34,13 @@ public class BaseModel {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public int getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(int totalNumber) {
+        this.totalNumber = totalNumber;
     }
 }

@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.zx.order.R;
 import com.zx.order.listener.PermissionListener;
 
@@ -20,8 +19,10 @@ import java.util.List;
 import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
 /**
- *       Created by HaiJun on 2018/6/11 17:16
- *       基类Activity
+ * 基类Activity
+ * 作者：JHJ
+ * 日期：2018/11/2 11:00
+ * Q Q: 1320666709
  */
 public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelper.Delegate {
     private PermissionListener perListener;
@@ -33,10 +34,6 @@ public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelpe
         // 在 super.onCreate(savedInstanceState) 之前调用该方法
         initSwipeBackFinish();
         super.onCreate(savedInstanceState);
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.btn_check)
-                .fitsSystemWindows(true)
-                .init();
     }
 
     /**
@@ -108,6 +105,7 @@ public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelpe
 
     /**
      * 申请权限
+     *
      * @param permissions
      * @param perListener
      */
@@ -129,6 +127,7 @@ public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelpe
 
     /**
      * 权限申请回调函数
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -167,11 +166,5 @@ public class BaseActivity extends AppCompatActivity implements BGASwipeBackHelpe
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         }
         return super.onTouchEvent(event);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ImmersionBar.with(this).destroy();
     }
 }
