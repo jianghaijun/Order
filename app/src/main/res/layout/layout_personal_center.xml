@@ -113,27 +113,6 @@
             android:background="@color/gray" />
 
         <Button
-            android:id="@+id/btnUpDateHead"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty_dp"
-            android:background="@drawable/touch_bg"
-            android:drawableLeft="@drawable/update_head"
-            android:drawablePadding="@dimen/ten_dp"
-            android:drawableRight="@drawable/right_arrows"
-            android:gravity="left|center"
-            android:paddingLeft="@dimen/ten_dp"
-            android:paddingRight="@dimen/ten_dp"
-            android:text="@string/up_date_head"
-            android:textColor="@color/black"
-            android:textSize="@dimen/fourteen_sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/one_dp"
-            android:background="@color/gray" />
-
-        <Button
             android:id="@+id/btnComplaintsAndFeedback"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
@@ -155,6 +134,26 @@
             android:background="@color/gray" />
 
         <Button
+            android:id="@+id/btnUpDateHead"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty_dp"
+            android:background="@drawable/touch_bg"
+            android:drawableLeft="@drawable/update_head"
+            android:drawablePadding="@dimen/ten_dp"
+            android:gravity="left|center"
+            android:paddingLeft="@dimen/ten_dp"
+            android:paddingRight="@dimen/ten_dp"
+            android:text="@string/up_date_head"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/gray" />
+
+        <Button
             android:id="@+id/btnLogout"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
@@ -162,7 +161,6 @@
             android:background="@drawable/touch_bg"
             android:drawableLeft="@drawable/logout"
             android:drawablePadding="@dimen/ten_dp"
-            android:drawableRight="@drawable/right_arrows"
             android:gravity="left|center"
             android:paddingLeft="@dimen/ten_dp"
             android:paddingRight="@dimen/ten_dp"

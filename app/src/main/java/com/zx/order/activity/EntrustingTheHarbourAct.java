@@ -229,15 +229,17 @@ public class EntrustingTheHarbourAct extends BaseActivity {
         LoadingUtils.showLoading(mContext);
         List<Map<String, String>> entrustIdList = new ArrayList<>();
         for (EntrustingTheHarbourBean harbourBean : dataList) {
-            Map<String, String> map = new HashMap<>();
-            map.put("entrustHarbourId", harbourBean.getEntrustHarbourId());
-            map.put("voyageId", harbourBean.getVoyageId());
-            map.put("cntrId", harbourBean.getCntrId());
-            map.put("cargoBillId", harbourBean.getCargoBillId());
-            map.put("entrustTerminal", strList.get(0));
-            map.put("portPurpose", strList.get(1));
-            map.put("orderType", "9");
-            entrustIdList.add(map);
+            if (harbourBean.isSelect()) {
+                Map<String, String> map = new HashMap<>();
+                map.put("entrustHarbourId", harbourBean.getEntrustHarbourId());
+                map.put("voyageId", harbourBean.getVoyageId());
+                map.put("cntrId", harbourBean.getCntrId());
+                map.put("cargoBillId", harbourBean.getCargoBillId());
+                map.put("entrustTerminal", strList.get(0));
+                map.put("portPurpose", strList.get(1));
+                map.put("orderType", "9");
+                entrustIdList.add(map);
+            }
         }
         Request request = ChildThreadUtil.getRequest(mContext, ConstantsUtil.ENTRUST_HARBOUR, new Gson().toJson(entrustIdList));
         ConstantsUtil.okHttpClient.newCall(request).enqueue(new Callback() {

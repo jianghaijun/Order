@@ -23,6 +23,7 @@ import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
 import com.zx.order.utils.FalseDataUtil;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
 import com.zx.order.utils.SpUtil;
@@ -179,6 +180,7 @@ public class InspectionCommissionDetailsAct extends BaseActivity {
     private EditText addNewEdt(InspectionCommissionBean bean) {
         EditText edt = new EditText(mContext);
         edt.setText(bean.getTxtContent());
+        edt.setFilters(InputFilterUtil.inputFilter(mContext));
         edt.setTextColor(ContextCompat.getColor(mContext, R.color.dark_b));
         edt.setTextSize(StrUtil.isEmpty(bean.getTxtSize()) ? 14 : Integer.parseInt(bean.getTxtSize()));
         edt.setGravity(Gravity.LEFT | Gravity.CENTER);

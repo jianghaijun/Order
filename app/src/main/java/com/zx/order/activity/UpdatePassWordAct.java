@@ -15,6 +15,7 @@ import com.zx.order.base.BaseActivity;
 import com.zx.order.base.BaseModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -67,6 +68,10 @@ public class UpdatePassWordAct extends BaseActivity {
         imgBtnLeft.setVisibility(View.VISIBLE);
         imgBtnLeft.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.back_btn));
         txtTitle.setText("修改密码");
+
+        edtOldPassWord.setFilters(InputFilterUtil.inputFilter(this));
+        edtNewPassWord.setFilters(InputFilterUtil.inputFilter(this));
+        edtQueryPassWord.setFilters(InputFilterUtil.inputFilter(this));
     }
 
     /**

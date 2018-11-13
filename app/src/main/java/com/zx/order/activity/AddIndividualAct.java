@@ -16,10 +16,10 @@ import com.zx.order.R;
 import com.zx.order.base.BaseActivity;
 import com.zx.order.base.BaseModel;
 import com.zx.order.listener.IntListener;
-import com.zx.order.model.FlightVoyageModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -179,6 +179,70 @@ public class AddIndividualAct extends BaseActivity {
         imgBtnLeft.setVisibility(View.VISIBLE);
         txtTitle.setText(getIntent().getStringExtra("title"));
         imgBtnLeft.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.back_btn));
+        setFilters();
+    }
+
+    /**
+     * 设置不可输入表情
+     */
+    private void setFilters() {
+        if (edtBillOfLadingNum != null) {
+            edtBillOfLadingNum.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtContainerNo != null) {
+            edtContainerNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtBoxNo != null) {
+            edtBoxNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtInspectionNo != null) {
+            edtInspectionNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtProductName != null) {
+            edtProductName.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtSpecifications != null) {
+            edtSpecifications.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtNumber != null) {
+            edtNumber.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtWeight != null) {
+            edtWeight.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtCarNo != null) {
+            edtCarNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtPrimaryBoxNo != null) {
+            edtPrimaryBoxNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtTargetBoxNo != null) {
+            edtTargetBoxNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtTargetCarNo != null) {
+            edtTargetCarNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtColorNo != null) {
+            edtColorNo.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtShipCompany != null) {
+            edtShipCompany.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtCaseRequirements != null) {
+            edtCaseRequirements.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtFleet != null) {
+            edtFleet.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtTotalWeight != null) {
+            edtTotalWeight.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtDestination != null) {
+            edtDestination.setFilters(InputFilterUtil.inputFilter(this));
+        }
+        if (edtDistributionRequirement != null) {
+            edtDistributionRequirement.setFilters(InputFilterUtil.inputFilter(this));
+        }
     }
 
     /**
@@ -277,7 +341,7 @@ public class AddIndividualAct extends BaseActivity {
                 } else if (StrUtil.isEmpty(edtWeight.getText().toString().trim())) { // 件重
                     ToastUtil.showShort(mContext, "请输入件重！");
                 } else {
-                    obj.put("type", point-3);// 车号
+                    obj.put("type", point - 3);// 车号
                     obj.put("carNo", edtCarNo.getText().toString().trim());// 车号
                     obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
                     obj.put("cargoName", edtProductName.getText().toString().trim());// 品名
@@ -455,7 +519,7 @@ public class AddIndividualAct extends BaseActivity {
      * 提交数据
      *
      * @param isContinueAdd 是否继续添加
-     * @param param 提交参数
+     * @param param         提交参数
      */
     private void submitData(final boolean isContinueAdd, JSONObject param) {
         LoadingUtils.showLoading(mContext);

@@ -26,6 +26,7 @@ import com.zx.order.model.BoxStatusModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -100,6 +101,9 @@ public class BoxStatusAct extends BaseActivity {
         } else {
             ToastUtil.showShort(mContext, mContext.getString(R.string.not_network));
         }
+
+        edtContainerNo.setFilters(InputFilterUtil.inputFilter(this));
+        edtSuitcaseCarNo.setFilters(InputFilterUtil.inputFilter(this));
     }
 
     /**

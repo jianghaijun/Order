@@ -16,7 +16,6 @@ import com.zx.order.bean.ReservationBean;
 import com.zx.order.model.ReservationModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ToastUtil;

@@ -82,6 +82,7 @@ public class PersonalCenterCla {
         holder.btnUpDateHead.setOnClickListener(new OnClick());
         holder.btnLogout.setOnClickListener(new OnClick());
         holder.ivHead.setOnClickListener(new OnClick());
+        holder.btnComplaintsAndFeedback.setOnClickListener(new OnClick());
     }
 
     /**
@@ -166,6 +167,11 @@ public class PersonalCenterCla {
                     intent.putExtra("imgUrl", userHead);
                     mContext.startActivity(intent);
                     break;
+                // 投诉反馈
+                case R.id.btnComplaintsAndFeedback:
+                    intent = new Intent(mContext, ComplaintFeedbackAct.class);
+                    mContext.startActivity(intent);
+                    break;
             }
         }
     }
@@ -186,5 +192,7 @@ public class PersonalCenterCla {
         private Button btnUpDateHead;
         @ViewInject(R.id.btnLogout)
         private Button btnLogout;
+        @ViewInject(R.id.btnComplaintsAndFeedback)
+        private Button btnComplaintsAndFeedback;
     }
 }

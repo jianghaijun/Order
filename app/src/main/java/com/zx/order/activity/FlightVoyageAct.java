@@ -22,7 +22,6 @@ import com.zx.order.bean.FlightVoyageBean;
 import com.zx.order.model.FlightVoyageModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
-import com.zx.order.utils.FalseDataUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
@@ -82,7 +81,7 @@ public class FlightVoyageAct extends BaseActivity {
         initData();
 
         if (JudgeNetworkIsAvailable.isNetworkAvailable(mContext)) {
-            getData( true);
+            getData(true);
         } else {
             ToastUtil.showShort(mContext, getString(R.string.not_network));
         }

@@ -199,7 +199,7 @@ public class OrderDetailsAct extends BaseActivity {
             orderBean.setOtherId(detailsBean.getInStorageId());
             orderBean.setOtherIdName("inStorageId");
             List<String> strList = new ArrayList<>();
-            orderBean.setHandleState("报关预约 " + detailsBean.getHandleState());
+            orderBean.setHandleState("入库预约 " + detailsBean.getHandleState());
             strList.add("受理时间 " + DateUtils.setDataToStr4(detailsBean.getAcceptanceTime()));
             strList.add("处理时间 " + DateUtils.setDataToStr4(detailsBean.getHandleTime()));
             strList.add("完成时间 " + DateUtils.setDataToStr4(detailsBean.getFinishTime()));

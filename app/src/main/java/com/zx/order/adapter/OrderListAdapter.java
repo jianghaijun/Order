@@ -102,6 +102,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     /**
+     * 动态添加显示内容
+     *
      * @param orderBean
      * @param holder
      */
@@ -224,7 +226,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                     DateUtils.yearMonthDayPicker(mContext, new StrListener() {
                         @Override
                         public void selectStr(String str) {
-                            submitReservation(str, orderBean.getCustomsId());
+                            submitReservation(str, orderBean.getCustomsId(), orderBean);
                         }
                     });
                     break;
@@ -244,8 +246,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
      *
      * @param declarationTime 预约时间
      * @param customsId       报关预约主键ID
+     * @param orderBean       报关预约主键ID
      */
-    private void submitReservation(String declarationTime, String customsId) {
+    private void submitReservation(final String declarationTime, String customsId, final OrderBean orderBean) {
         LoadingUtils.showLoading(mContext);
         JSONObject obj = new JSONObject();
         obj.put("declarationTime", DateUtil.parse(declarationTime, "yyyy-MM-dd").getTime());
@@ -268,6 +271,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                             @Override
                             public void run() {
                                 LoadingUtils.hideLoading();
+                                List<String> strList = orderBean.getOrderList();
+                                if (strList != null) {
+                                    for (int i = 0; i < strList.size(); i++) {
+                                        if (StrUtil.containsAny(strList.get(i), "预约时间")) {
+                                            strList.set(i, "预约时间:" + declarationTime);
+                                            break;
+                                        }
+                                    }
+                                }
+                                OrderListAdapter.this.notifyDataSetChanged();
                                 ToastUtil.showShort(mContext, model.getMessage());
                             }
                         });

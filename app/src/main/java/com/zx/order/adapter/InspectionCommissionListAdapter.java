@@ -17,6 +17,7 @@ import com.zx.order.R;
 import com.zx.order.bean.InspectionCommissionBean;
 import com.zx.order.listener.IntListener;
 import com.zx.order.utils.DateUtils;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.ToastUtil;
 
 import org.xutils.common.util.DensityUtil;
@@ -172,6 +173,7 @@ public class InspectionCommissionListAdapter extends RecyclerView.Adapter<Inspec
     private EditText addNewEdt(InspectionCommissionBean bean, InspectionCommissionBean dataBean) {
         EditText edt = new EditText(mContext);
         edt.setText(bean.getTxtContent());
+        edt.setFilters(InputFilterUtil.inputFilter((Activity) mContext));
         edt.setTextColor(ContextCompat.getColor(mContext, R.color.dark_b));
         edt.setTextSize(StrUtil.isEmpty(bean.getTxtSize()) ? 14 : Integer.parseInt(bean.getTxtSize()));
         edt.setGravity(Gravity.LEFT | Gravity.CENTER);

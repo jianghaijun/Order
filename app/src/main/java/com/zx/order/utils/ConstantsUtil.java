@@ -86,6 +86,8 @@ public class ConstantsUtil {
     public static final String CUSTOMS_DECLARATION = "/updateZzYdCustomsDeclaration";
     // 评价订单详情
     public static final String DEAL_ORDER_DETAIL = "/dealZzYdOrderDetail";
+    // 反馈新增并上传附件
+    public static final String UPLOAD_FILES = "/addZzYdFeedbackAndUploadFiles";
 
     // 文件存储路径
     public static final String SAVE_PATH = "/mnt/sdcard/zxOrder/";

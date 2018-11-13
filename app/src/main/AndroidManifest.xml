@@ -133,7 +133,6 @@
             android:name=".activity.OrderDetailsAct"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-
         <!--注册页-->
         <activity
             android:name=".activity.RegionActivity"
@@ -152,6 +151,16 @@
         <!--展示图片-->
         <activity
             android:name=".activity.ShowPhotosAct"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <!--展示图片-->
+        <activity
+            android:name=".activity.ShowPhotoListAct"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <!--投诉与反馈-->
+        <activity
+            android:name=".activity.ComplaintFeedbackAct"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
     </application>

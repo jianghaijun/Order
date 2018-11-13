@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.zx.order.R;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.ToastUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -32,6 +33,7 @@ public class HomePageCla {
     private HomePageTab1Cla homePageTab1; // 通关状态
     private boolean firstLoadTab2 = true;
 
+    private EditText edtSearchContext;
     // 子布局
     private View layTab1, layTab2;
     // View列表
@@ -65,6 +67,9 @@ public class HomePageCla {
 
         holder.tlTop.setupWithViewPager(holder.vpHomePage);
 
+        edtSearchContext = (EditText) layTab1.findViewById(R.id.edtSearchContext);
+        edtSearchContext.setFilters(InputFilterUtil.inputFilter(mContext));
+
         homePageTab1.setDate("");
     }
 
@@ -72,7 +77,6 @@ public class HomePageCla {
      * 搜索
      */
     public void search() {
-        EditText edtSearchContext = (EditText) layTab1.findViewById(R.id.edtSearchContext);
         if (StrUtil.isEmpty(edtSearchContext.getText().toString())) {
             ToastUtil.showShort(mContext, "请输入检索条件！");
         } else {

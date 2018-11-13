@@ -17,6 +17,7 @@ import com.zx.order.bean.OrderBean;
 import com.zx.order.model.OrderListModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.JudgeNetworkIsAvailable;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ToastUtil;
@@ -53,6 +54,8 @@ public class OrderCla {
         this.mContext = mContext;
         holder = new LatestInfoHolder();
         x.view().inject(holder, layout);
+
+        holder.edtSearchContext.setFilters(InputFilterUtil.inputFilter(mContext));
     }
 
     /**

@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +21,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.zx.order.R;
 import com.zx.order.base.BaseActivity;
-import com.zx.order.base.BaseModel;
 import com.zx.order.model.ClearanceInspectionModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
 import com.zx.order.utils.SpUtil;
-import com.zx.order.utils.ToastUtil;
 
-import org.litepal.LitePal;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -39,15 +35,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import cn.hutool.json.JSONUtil;
-import cn.hutool.system.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -289,10 +282,10 @@ public class MainPageAct extends BaseActivity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
             /*隐藏软键盘*/
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(inputMethodManager.isActive()){
+            if (inputMethodManager.isActive()) {
                 inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             }
 

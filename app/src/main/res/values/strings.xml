@@ -16,6 +16,7 @@
     <!--首页-->
     <string name="please_input_search_context">请输入检索条件！</string>
     <string name="please_input_voyage">请输入航名航次或目的港！</string>
+    <string name="please_input_voyage_order">请输入航名航次或提单号！</string>
     <string name="bill_of_lading_num">提单号：</string>
     <string name="clearance_status">通关状态</string>
     <string name="inspection">查验</string>
@@ -114,7 +115,14 @@
     <string name="my_bill">我的账单</string>
     <string name="up_date_password">更改密码</string>
     <string name="up_date_head">修改头像</string>
-    <string name="complaints_and_feedback">投诉与反馈</string>
+    <string name="complaints_and_feedback">投诉反馈</string>
     <string name="logout">注销登录</string>
+    <string name="question_type">问题类型</string>
+    <string name="please_input_question_type">请选择问题类型！</string>
+    <string name="people_of_complaint">投诉对象</string>
+    <string name="input_people_of_complaint">请输入投诉对象！</string>
+    <string name="cause_of_complaint">投诉原因</string>
+    <string name="input_cause_of_complaint">请输入投诉原因！</string>
+    <string name="problem_description">请仔细描述您的问题！</string>
 
 </resources>
