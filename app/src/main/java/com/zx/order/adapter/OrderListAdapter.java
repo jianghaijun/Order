@@ -174,7 +174,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 str = "入库预约 " + orderBean.getHandleState();
                 break;
             case "4":
-                str = "取样预约 " + orderBean.getHandleState();
+                str = "取样委托 " + orderBean.getHandleState();
                 break;
             case "5":
                 str = "出库预约 " + orderBean.getHandleState();
@@ -183,7 +183,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 str = "配送预约 " + orderBean.getHandleState();
                 break;
             case "7":
-                str = "诉提预约 " + orderBean.getHandleState();
+                str = "拆提预约 " + orderBean.getHandleState();
                 break;
             case "8":
                 str = "熏蒸预约 " + orderBean.getHandleState();

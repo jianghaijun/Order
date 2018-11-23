@@ -26,6 +26,7 @@ import com.zx.order.model.OrderDetailsModel;
 import com.zx.order.utils.ChildThreadUtil;
 import com.zx.order.utils.ConstantsUtil;
 import com.zx.order.utils.DateUtils;
+import com.zx.order.utils.InputFilterUtil;
 import com.zx.order.utils.LoadingUtils;
 import com.zx.order.utils.ScreenManagerUtil;
 import com.zx.order.utils.ToastUtil;
@@ -484,6 +485,7 @@ public class OrderDetailsAct extends BaseActivity {
 
             final EditText edtEvaluate = new EditText(this);
             edtEvaluate.setHint("请填写您的评价！");
+            edtEvaluate.setFilters(InputFilterUtil.inputFilter(mContext));
             edtEvaluate.setText(orderBean.getEvaluateContent());
             edtEvaluate.setTextSize(14);
             edtEvaluate.setGravity(Gravity.LEFT | Gravity.TOP);

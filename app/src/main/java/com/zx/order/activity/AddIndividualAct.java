@@ -460,7 +460,7 @@ public class AddIndividualAct extends BaseActivity {
                     obj.put("cargoBillNo", edtBillOfLadingNum.getText().toString().trim());// 提单号
                     obj.put("cntrNo", edtBoxNo.getText().toString().trim());// 箱号
                     obj.put("shipCompany", edtShipCompany.getText().toString().trim());// 船公司
-                    obj.put("caseRequirements", edtCaseRequirements.getText().toString().trim());// 验箱要求
+                    obj.put("tryoffAsk", edtCaseRequirements.getText().toString().trim());// 验箱要求
                     obj.put("orderType", "11");// 预约类型
                     submitData(isContinueAdd, obj);
                 }
